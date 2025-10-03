@@ -24,27 +24,31 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       >
         {/* Header */}
         <header className="sticky top-0 z-50 border-b border-primary/20 bg-[color:var(--background)]/75 backdrop-blur supports-[backdrop-filter]:bg-[color:var(--background)]/60">
-          <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-            {/* Brand */}
-            <Link href="/" className="flex items-center gap-3" aria-label="ThreatVet home">
+          <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 h-16">
+            <Link href="/" className="flex items-center gap-3">
               <Image
-                src="/logo.png"           // ensure public/logo.png exists
+                src="/logo.png"
                 alt="ThreatVet"
                 width={136}
-                height={28}
+                height={30}
                 priority
-                sizes="136px"
-                className="h-[28px] w-auto select-none"
+                className="select-none"
               />
             </Link>
 
-            {/* Primary Nav */}
             <div className="flex items-center gap-6 text-sm">
-              <Link href="/" className="hover:text-primary transition-colors">Home</Link>
-              <Link href="/about" className="hover:text-primary transition-colors">About</Link>
-              <Link href="/services" className="hover:text-primary transition-colors">Services</Link>
-              <Link href="/intelligence" className="hover:text-primary transition-colors">Intelligence</Link>
-
+              <Link href="/" className="hover:text-primary transition-colors">
+                Home
+              </Link>
+              <Link href="/about" className="hover:text-primary transition-colors">
+                About
+              </Link>
+              <Link href="/services" className="hover:text-primary transition-colors">
+                Services
+              </Link>
+              <Link href="/intelligence" className="hover:text-primary transition-colors">
+                Intelligence
+              </Link>
               <Link
                 href="/contact"
                 className="rounded-xl border border-primary/40 px-3 py-2 text-primary hover:bg-primary/10 transition-colors"
@@ -62,13 +66,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </header>
 
         {/* Page content */}
-        <main>{children}</main>
+        {children}
 
         {/* Footer */}
         <footer className="border-t border-primary/20 bg-[color:var(--background)]">
-          <div className="mx-auto grid max-w-7xl gap-8 px-6 py-10 md:grid-cols-3">
+          <div className="mx-auto max-w-7xl px-6 py-10 grid gap-8 md:grid-cols-3">
             <div className="space-y-3">
-              <Image src="/logo.png" alt="ThreatVet" width={160} height={32} className="h-8 w-auto" />
+              <Image src="/logo.png" alt="ThreatVet" width={160} height={32} />
               <p className="text-sm text-gray-300">
                 Delivering comprehensive, AI-driven cybersecurity solutions for modern enterprises.
                 Protect your digital assets with 360° coverage.
@@ -76,18 +80,38 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
 
             <div>
-              <div className="mb-3 font-semibold">Quick Links</div>
+              <div className="font-semibold mb-3">Quick Links</div>
               <ul className="space-y-2 text-sm text-gray-300">
-                <li><Link className="hover:text-primary" href="/">Home</Link></li>
-                <li><Link className="hover:text-primary" href="/about">About</Link></li>
-                <li><Link className="hover:text-primary" href="/services">Services</Link></li>
-                <li><Link className="hover:text-primary" href="/intelligence">Intelligence</Link></li>
-                <li><Link className="hover:text-primary" href="/contact">Contact</Link></li>
+                <li>
+                  <Link className="hover:text-primary" href="/">
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link className="hover:text-primary" href="/about">
+                    About
+                  </Link>
+                </li>
+                <li>
+                  <Link className="hover:text-primary" href="/services">
+                    Services
+                  </Link>
+                </li>
+                <li>
+                  <Link className="hover:text-primary" href="/intelligence">
+                    Intelligence
+                  </Link>
+                </li>
+                <li>
+                  <Link className="hover:text-primary" href="/contact">
+                    Contact
+                  </Link>
+                </li>
               </ul>
             </div>
 
             <div>
-              <div className="mb-3 font-semibold">Contact</div>
+              <div className="font-semibold mb-3">Contact</div>
               <ul className="space-y-2 text-sm text-gray-300">
                 <li>info@threatvet.com</li>
                 <li>+91 93453 40430</li>

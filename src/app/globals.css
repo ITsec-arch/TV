@@ -19,18 +19,18 @@
   --color-accent-foreground: var(--accent-foreground);
 }
 
-/* === ThreatVet Brand (Dark) === */
+/* === ThreatVet Brand === */
 :root, .dark {
-  --background: #0b0b0b;              /* nearly black to match logo */
+  --background: #0b0b0b;
   --foreground: #ffffff;
 
-  --primary: #ef4444;                 /* ThreatVet red (R500) */
-  --primary-foreground: #160606;
+  --primary: #ef4444;                 /* ThreatVet red */
+  --primary-foreground: #1a0909;
 
-  --accent: #f97316;                  /* warm orange for gradient tail */
+  --accent: #f97316;                  /* warm orange */
   --accent-foreground: #1a0a04;
 
-  --secondary: #111827;               /* slate-900-ish panels */
+  --secondary: #0f172a;               /* deep slate panel */
   --secondary-foreground: #d1d5db;
 
   --border: #1f2937;
@@ -40,24 +40,40 @@
   --radius: 0.75rem;
 }
 
-/* tweak hero/helpers to use brand colors */
-.hero-bg::before, .hero-bg::after {
-  background:
-    radial-gradient(600px 300px at 50% -10%, color-mix(in oklab, var(--primary) 40%, transparent), transparent 60%),
-    radial-gradient(600px 300px at 90% 10%, color-mix(in oklab, var(--accent) 28%, transparent), transparent 60%),
-    radial-gradient(600px 300px at 10% 20%, rgba(34,197,94,.06), transparent 60%);
+/* Base */
+@layer base {
+  * { @apply border-border outline-ring/50; }
+  html, body { @apply bg-background text-foreground; }
 }
 
-/* grid helpers use brand instead of cyan/blue */
+/* Subtle grid + branded glow */
 .soft-grid {
   position: relative;
   background:
-    radial-gradient(1000px 420px at 50% -80px, color-mix(in oklab, var(--primary) 22%, transparent), transparent 55%),
-    radial-gradient(800px 320px at 100% 0%, color-mix(in oklab, var(--accent) 14%, transparent), transparent 60%),
+    radial-gradient(900px 420px at 50% -120px,
+      color-mix(in oklab, var(--primary) 16%, transparent), transparent 55%),
+    radial-gradient(800px 360px at 100% 0%,
+      color-mix(in oklab, var(--accent) 10%, transparent), transparent 65%),
     var(--background);
 }
+.soft-grid::before {
+  content: "";
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(1000px 540px at 50% 0%, rgba(255,255,255,.7), transparent 60%);
+}
+
+/* Headline glow */
 .glow {
   text-shadow:
-    0 0 24px color-mix(in oklab, var(--primary) 55%, transparent),
-    0 0 40px color-mix(in oklab, var(--accent) 45%, transparent);
+    0 0 18px color-mix(in oklab, var(--primary) 55%, transparent),
+    0 0 36px color-mix(in oklab, var(--accent) 45%, transparent);
+}
+
+/* Section wrapper for consistent page spacing */
+.section {
+  @apply mx-auto max-w-7xl px-6 py-20;
 }
