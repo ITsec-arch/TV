@@ -1,26 +1,33 @@
 "use client";
-import { motion } from "framer-motion";
-import { type LucideIcon } from "lucide-react";
 
-export default function ServiceCard({
-  icon: Icon, title, description, features = [],
-}: { icon: LucideIcon; title: string; description: string; features?: string[] }) {
+import { type ComponentType } from "react";
+
+type Props = Readonly<{
+  icon: ComponentType<{ className?: string }>;
+  title: string;
+  description: string;
+  features: string[];
+}>;
+
+export default function ServiceCard({ icon: Icon, title, description, features }: Props) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-      className="relative rounded-3xl border border-primary/20 bg-[color:var(--secondary)] p-6 card-tilt"
-    >
-      <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl border border-primary/40 bg-primary/10">
-        <Icon className="h-7 w-7 text-[color:var(--primary)]" />
-      </div>
-      <h3 className="mb-2 text-xl font-semibold">{title}</h3>
-      <p className="mb-4 text-gray-300">{description}</p>
-      {features.length > 0 && (
-        <ul className="space-y-2 text-sm text-gray-300">
-          {features.map((f, i) => <li key={i}>• {f}</li>)}
+    <div className="group relative overflow-hidden rounded-2xl border border-primary/25 bg-[color:var(--secondary)] p-6 transition-shadow hover:shadow-[0_0_0_1px] hover:shadow-primary/30">
+      <div className="absolute inset-0 bg-gradient-to-br from-[color:var(--primary)]/0 to-[color:var(--accent)]/0 opacity-0 transition-opacity duration-500 group-hover:opacity-10" />
+      <div className="relative z-10">
+        <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl border border-primary/40 bg-primary/10 text-primary">
+          <Icon className="h-6 w-6" />
+        </div>
+        <h3 className="text-xl font-semibold">{title}</h3>
+        <p className="mt-2 text-gray-300">{description}</p>
+        <ul className="mt-4 space-y-2 text-sm text-gray-300">
+          {features.map((f) => (
+            <li key={f} className="flex items-start gap-2">
+              <span aria-hidden className="mt-1 inline-block h-1.5 w-1.5 rounded-full bg-[color:var(--accent)]" />
+              {f}
+            </li>
+          ))}
         </ul>
-      )}
-    </motion.div>
+      </div>
+    </div>
   );
 }
-
