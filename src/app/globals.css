@@ -1,26 +1,94 @@
 @import "tailwindcss";
+@plugin "tailwindcss-animate";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* Map Tailwind tokens -> CSS vars (v4 inline theme) */
+@custom-variant dark (&:is(.dark *));
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* === Cyan Matrix palette === */
+:root, .dark {
+  --background: #0b1020;
+  --foreground: #ffffff;
+  --primary: #22d3ee;               /* cyan */
+  --primary-foreground: #051015;
+  --secondary: #0f172a;             /* panels */
+  --secondary-foreground: #cbd5e1;
+  --accent: #60a5fa;                /* blue */
+  --accent-foreground: #07121f;
+  --border: #1e293b;
+  --input: #0f172a;
+  --ring: #22d3ee;
+  --radius: 0.75rem;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Base */
+@layer base {
+  * { @apply border-border outline-ring/50; }
+  html, body { height: 100%; }
+  body { @apply bg-background text-foreground; }
+}
+
+/* Fancy background for hero */
+@keyframes pan {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+.hero-bg {
+  position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+}
+.hero-bg::before, .hero-bg::after {
+  content: "";
+  position: absolute; inset: -20%;
+  background:
+    radial-gradient(600px 300px at 50% -10%, rgba(34,211,238,.18), transparent 60%),
+    radial-gradient(600px 300px at 90% 10%, rgba(96,165,250,.12), transparent 60%),
+    radial-gradient(600px 300px at 10% 20%, rgba(34,197,94,.10), transparent 60%);
+  filter: blur(10px);
+  animation: pan 22s linear infinite;
+}
+.hero-bg::after { animation-duration: 28s; opacity: .7; }
+
+/* Dot grid overlay */
+.grid-overlay::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: radial-gradient(800px 380px at 50% 0%, rgba(255,255,255,.8), transparent 65%);
+  pointer-events: none;
+}
+
+/* Marquee */
+@keyframes marquee { to { transform: translateX(-50%); } }
+.marquee {
+  display: flex; overflow: hidden; gap: 3rem;
+}
+.marquee-track {
+  display: flex; gap: 3rem; min-width: 200%;
+  animation: marquee 20s linear infinite;
+}
+
+/* Nice card hover */
+.card-tilt {
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.card-tilt:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(2, 132, 199, .25);
 }
