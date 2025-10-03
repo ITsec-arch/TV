@@ -23,40 +23,32 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-background text-foreground antialiased`}
       >
         {/* Header */}
-        <header className="sticky top-0 z-50 border-b border-primary/20 bg-[color:var(--background)]/75 backdrop-blur supports-[backdrop-filter]:bg-[color:var(--background)]/60">
-          <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 h-16">
-            <Link href="/" className="flex items-center gap-3">
+        <header className="sticky top-0 z-50 border-b border-primary/20 bg-[color:var(--background)]/80 backdrop-blur supports-[backdrop-filter]:bg-[color:var(--background)]/60">
+          <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 md:px-6 py-3 md:py-4">
+            {/* Logo */}
+            <Link href="/" aria-label="ThreatVet home" className="flex items-center gap-3">
+              {/* 160×32 keeps aspect crisp; layout reserved to stop CLS */}
               <Image
                 src="/logo.png"
                 alt="ThreatVet"
-                width={136}
-                height={30}
+                width={160}
+                height={32}
                 priority
-                className="select-none"
+                className="h-[28px] w-auto md:h-[32px]"
               />
             </Link>
 
-            <div className="flex items-center gap-6 text-sm">
-              <Link href="/" className="hover:text-primary transition-colors">
-                Home
-              </Link>
-              <Link href="/about" className="hover:text-primary transition-colors">
-                About
-              </Link>
-              <Link href="/services" className="hover:text-primary transition-colors">
-                Services
-              </Link>
-              <Link href="/intelligence" className="hover:text-primary transition-colors">
-                Intelligence
-              </Link>
+            {/* Primary nav (Contact removed; Get Started handles it) */}
+            <div className="flex items-center gap-4 md:gap-6 text-sm">
+              <Link href="/" className="hover:text-primary transition-colors">Home</Link>
+              <Link href="/about" className="hover:text-primary transition-colors">About</Link>
+              <Link href="/services" className="hover:text-primary transition-colors">Services</Link>
+              <Link href="/intelligence" className="hover:text-primary transition-colors">Intelligence</Link>
+
+              {/* Get Started -> Contact page */}
               <Link
                 href="/contact"
-                className="rounded-xl border border-primary/40 px-3 py-2 text-primary hover:bg-primary/10 transition-colors"
-              >
-                Contact
-              </Link>
-              <Link
-                href="/contact"
+                aria-label="Get started — contact ThreatVet"
                 className="rounded-xl px-3 py-2 text-white bg-gradient-to-r from-[color:var(--primary)] to-[color:var(--accent)] hover:opacity-90 transition"
               >
                 Get Started
@@ -82,31 +74,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div>
               <div className="font-semibold mb-3">Quick Links</div>
               <ul className="space-y-2 text-sm text-gray-300">
-                <li>
-                  <Link className="hover:text-primary" href="/">
-                    Home
-                  </Link>
-                </li>
-                <li>
-                  <Link className="hover:text-primary" href="/about">
-                    About
-                  </Link>
-                </li>
-                <li>
-                  <Link className="hover:text-primary" href="/services">
-                    Services
-                  </Link>
-                </li>
-                <li>
-                  <Link className="hover:text-primary" href="/intelligence">
-                    Intelligence
-                  </Link>
-                </li>
-                <li>
-                  <Link className="hover:text-primary" href="/contact">
-                    Contact
-                  </Link>
-                </li>
+                <li><Link className="hover:text-primary" href="/">Home</Link></li>
+                <li><Link className="hover:text-primary" href="/about">About</Link></li>
+                <li><Link className="hover:text-primary" href="/services">Services</Link></li>
+                <li><Link className="hover:text-primary" href="/intelligence">Intelligence</Link></li>
+                <li><Link className="hover:text-primary" href="/contact">Contact</Link></li>
               </ul>
             </div>
 
