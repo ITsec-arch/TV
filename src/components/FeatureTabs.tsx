@@ -1,41 +1,36 @@
 "use client";
 
 import { useState } from "react";
-import { Shield, Target, Brain, Code, Cloud, TrendingUp } from "lucide-react";
+import { Shield, Target, Brain, Code, Cloud, TrendingUp, type LucideIcon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 type TabKey = "offensive" | "defensive" | "strategic";
 
-const TABS: Record<TabKey, { title: string; icon: any; bullets: string[]; blurb: string }> = {
+type TabDef = {
+  title: string;
+  icon: LucideIcon;
+  bullets: string[];
+  blurb: string;
+};
+
+const TABS: Record<TabKey, TabDef> = {
   offensive: {
     title: "Offensive",
     icon: Target,
     blurb: "Adversary simulation and exposure reduction through continuous testing.",
-    bullets: [
-      "Vulnerability Management (VAPT)",
-      "Continuous Red Teaming",
-      "LLM/Model Security Testing",
-    ],
+    bullets: ["Vulnerability Management (VAPT)", "Continuous Red Teaming", "LLM/Model Security Testing"],
   },
   defensive: {
     title: "Defensive",
     icon: Code,
     blurb: "Bake security into delivery pipelines and cloud foundations.",
-    bullets: [
-      "AppSec in CI/CD (SAST/DAST, secrets, IaC)",
-      "Cloud Architecture Security Reviews",
-      "Incident Readiness & Purple-Team",
-    ],
+    bullets: ["AppSec in CI/CD (SAST/DAST, secrets, IaC)", "Cloud Architecture Security Reviews", "Incident Readiness & Purple-Team"],
   },
   strategic: {
     title: "Strategic",
     icon: TrendingUp,
     blurb: "Board-aligned roadmaps and intelligence that drive ROI.",
-    bullets: [
-      "Threat Actor Intelligence",
-      "Ransomware Prevention Guidance",
-      "Risk & Maturity Roadmaps",
-    ],
+    bullets: ["Threat Actor Intelligence", "Ransomware Prevention Guidance", "Risk & Maturity Roadmaps"],
   },
 };
 
@@ -94,7 +89,7 @@ export default function FeatureTabs() {
   );
 }
 
-function InfoCard({ icon: Icon, title, text }: { icon: any; title: string; text: string }) {
+function InfoCard({ icon: Icon, title, text }: { icon: LucideIcon; title: string; text: string }) {
   return (
     <div className="rounded-3xl border border-primary/20 bg-[color:var(--secondary)] p-6 card-tilt">
       <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg border border-primary/40 bg-primary/10">
