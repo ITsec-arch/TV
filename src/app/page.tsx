@@ -1,5 +1,6 @@
 "use client";
 
+import type { ComponentType } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -19,18 +20,20 @@ import {
 import ServiceCard from "@/components/ServiceCard";
 
 type Problem = {
-  icon: React.ComponentType<{ className?: string }>;
+  icon: ComponentType<{ className?: string }>;
   title: string;
   description: string;
 };
+
 type Pillar = {
-  icon: React.ComponentType<{ className?: string }>;
+  icon: ComponentType<{ className?: string }>;
   title: string;
   description: string;
   color: string;
 };
+
 type Value = {
-  icon: React.ComponentType<{ className?: string }>;
+  icon: ComponentType<{ className?: string }>;
   title: string;
   description: string;
 };
@@ -62,24 +65,21 @@ const pillars: Pillar[] = [
     title: "Offensive Security",
     description:
       "Proactive hunting & penetration testing that finds issues before adversaries do.",
-    color:
-      "from-[color:var(--primary)] to-[color:var(--accent)]", // red → light red
+    color: "from-[color:var(--primary)] to-[color:var(--accent)]",
   },
   {
     icon: Shield,
     title: "Defensive Security",
     description:
       "Hardened architectures, zero-trust patterns, and DevSecOps automation.",
-    color:
-      "from-[color:var(--primary)]/75 to-[color:var(--primary)]/50", // stay in brand
+    color: "from-[color:var(--primary)]/75 to-[color:var(--primary)]/50",
   },
   {
     icon: Brain,
     title: "Strategic Intelligence",
     description:
       "AI-powered intel and data-backed roadmaps aligned to business outcomes.",
-    color:
-      "from-[color:var(--accent)] to-[color:var(--primary)]", // light red → red
+    color: "from-[color:var(--accent)] to-[color:var(--primary)]",
   },
 ];
 
@@ -368,7 +368,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* HOW IT WORKS (brand reds only) */}
+      {/* HOW IT WORKS – brand-aligned red/ember cards */}
       <section className="px-6 py-16 md:py-20">
         <div className="mx-auto max-w-7xl">
           <motion.div

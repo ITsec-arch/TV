@@ -1,81 +1,51 @@
-/* Tailwind v3-compatible entry */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Tailwind v4 entry */
+@import "tailwindcss";
+@plugin "tailwindcss-animate";
 
-/* === ThreatVet Brand (Black / White / Red) === */
-@layer base {
-  :root {
-    /* core palette mapped to CSS variables */
-    --background: #0b0b0b;         /* near-black */
-    --foreground: #ffffff;
-
-    --primary: #ef4444;            /* ThreatVet red */
-    --primary-foreground: #160606;
-
-    --accent: #f97316;             /* warm orange tail for gradients */
-    --accent-foreground: #1a0a04;
-
-    --secondary: #111827;          /* slate-900-ish panel */
-    --secondary-foreground: #d1d5db;
-
-    --border: #1f2937;
-    --input: #0f172a;
-    --ring: var(--primary);
-
-    --radius: 0.75rem;
-  }
-
-  html, body {
-    background-color: var(--background);
-    color: var(--foreground);
-  }
+/* Map Tailwind tokens -> CSS vars (v4 inline theme) */
+@custom-variant dark (&:is(.dark *));
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
 }
 
-/* COMPONENT TOKENS */
-@layer components {
-  .btn-primary {
-    @apply inline-flex items-center gap-2 rounded-xl px-4 py-2 text-white
-           bg-gradient-to-r from-[color:var(--primary)] to-[color:var(--accent)]
-           hover:opacity-90 transition;
-  }
-
-  .btn-outline {
-    @apply inline-flex items-center gap-2 rounded-xl px-4 py-2
-           border border-[color:var(--primary)]/40 text-white/90
-           hover:bg-[color:var(--primary)]/10 transition;
-  }
+/* === ThreatVet Brand (Black/White/Red) === */
+:root, .dark {
+  --background: #0b0b0b;  /* near black */
+  --foreground: #ffffff;
+  --primary:   #ef4444;   /* red */
+  --accent:    #f97316;   /* warm orange tail for gradients */
+  --secondary: #111827;   /* panel */
+  --border:    #1f2937;
+  --input:     #0f172a;
+  --ring:      var(--primary);
+  --radius:    0.75rem;
 }
 
-/* UTILITIES / EFFECTS */
-@layer utilities {
-  /* soft radial auras for hero */
-  .hero-bg::before,
-  .hero-bg::after {
-    content: "";
-    position: absolute; inset: 0; pointer-events: none;
-    background:
-      radial-gradient(600px 300px at 50% -10%,
-        color-mix(in oklab, var(--primary) 40%, transparent), transparent 60%),
-      radial-gradient(600px 300px at 90% 10%,
-        color-mix(in oklab, var(--accent) 28%, transparent), transparent 60%),
-      radial-gradient(600px 300px at 10% 20%,
-        rgba(34,197,94,.06), transparent 60%);
-  }
-
-  .soft-grid {
-    position: relative;
-    background:
-      radial-gradient(1000px 420px at 50% -80px,
-        color-mix(in oklab, var(--primary) 22%, transparent), transparent 55%),
-      radial-gradient(800px 320px at 100% 0%,
-        color-mix(in oklab, var(--accent) 14%, transparent), transparent 60%),
-      var(--background);
-  }
-
-  .glow {
-    text-shadow:
-      0 0 24px color-mix(in oklab, var(--primary) 55%, transparent),
-      0 0 40px color-mix(in oklab, var(--accent) 45%, transparent);
-  }
+/* Soft background auras */
+.soft-grid {
+  position: relative;
+  background:
+    radial-gradient(1000px 420px at 50% -80px, color-mix(in oklab, var(--primary) 22%, transparent), transparent 55%),
+    radial-gradient(800px 320px at 100% 0%, color-mix(in oklab, var(--accent) 14%, transparent), transparent 60%),
+    var(--background);
 }
+
+/* Hero glow */
+.glow {
+  text-shadow:
+    0 0 24px color-mix(in oklab, var(--primary) 55%, transparent),
+    0 0 40px color-mix(in oklab, var(--accent) 45%, transparent);
+}
+
