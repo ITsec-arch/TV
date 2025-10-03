@@ -3,29 +3,56 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
-  Shield, Target, Zap, Cloud, Brain, Lock, TrendingUp, Eye, Server, FileSearch, AlertTriangle, ArrowRight
+  Shield,
+  Target,
+  Zap,
+  Cloud,
+  Brain,
+  Lock,
+  TrendingUp,
+  Eye,
+  Server,
+  FileSearch,
+  AlertTriangle,
+  ArrowRight,
 } from "lucide-react";
 import ServiceCard from "@/components/ServiceCard";
 
-type Problem = { icon: React.ComponentType<{ className?: string }>; title: string; description: string };
-type Pillar = { icon: React.ComponentType<{ className?: string }>; title: string; description: string; color: string };
-type Value = { icon: React.ComponentType<{ className?: string }>; title: string; description: string };
+type Problem = {
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  description: string;
+};
+type Pillar = {
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  description: string;
+  color: string;
+};
+type Value = {
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  description: string;
+};
 
 const problems: Problem[] = [
   {
     icon: AlertTriangle,
     title: "Patching Delays",
-    description: "Critical vulnerabilities remain unpatched for weeks, leaving systems exposed to known exploits.",
+    description:
+      "Critical vulnerabilities remain unpatched for weeks, leaving systems exposed to known exploits.",
   },
   {
     icon: Brain,
     title: "AI/ML Risks",
-    description: "LLMs face prompt injection, data leakage, and adversarial attacks that bypass traditional testing.",
+    description:
+      "LLMs face prompt injection, data leakage, and adversarial attacks that bypass traditional testing.",
   },
   {
     icon: Cloud,
     title: "Cloud Misconfigurations",
-    description: "Complex multi-cloud estates create security gaps and ongoing compliance challenges.",
+    description:
+      "Complex multi-cloud estates create security gaps and ongoing compliance challenges.",
   },
 ];
 
@@ -33,20 +60,26 @@ const pillars: Pillar[] = [
   {
     icon: Target,
     title: "Offensive Security",
-    description: "Proactive hunting & penetration testing that finds issues before adversaries do.",
-    color: "from-[color:var(--primary)] to-[color:var(--accent)]",
+    description:
+      "Proactive hunting & penetration testing that finds issues before adversaries do.",
+    color:
+      "from-[color:var(--primary)] to-[color:var(--accent)]", // red → light red
   },
   {
     icon: Shield,
     title: "Defensive Security",
-    description: "Hardened architectures, zero-trust patterns, and DevSecOps automation.",
-    color: "from-sky-500 to-blue-500",
+    description:
+      "Hardened architectures, zero-trust patterns, and DevSecOps automation.",
+    color:
+      "from-[color:var(--primary)]/75 to-[color:var(--primary)]/50", // stay in brand
   },
   {
     icon: Brain,
     title: "Strategic Intelligence",
-    description: "AI-powered intel and data-backed roadmaps aligned to business outcomes.",
-    color: "from-rose-500 to-pink-500",
+    description:
+      "AI-powered intel and data-backed roadmaps aligned to business outcomes.",
+    color:
+      "from-[color:var(--accent)] to-[color:var(--primary)]", // light red → red
   },
 ];
 
@@ -54,17 +87,20 @@ const values: Value[] = [
   {
     icon: Shield,
     title: "360° Coverage",
-    description: "Lifecycle management from assessment to remediation—on one platform.",
+    description:
+      "Lifecycle management from assessment to remediation—on one platform.",
   },
   {
     icon: Brain,
     title: "AI-Driven Testing",
-    description: "Faster detection and predictive analytics with intelligent automation.",
+    description:
+      "Faster detection and predictive analytics with intelligent automation.",
   },
   {
     icon: TrendingUp,
     title: "Business-Aligned ROI",
-    description: "Security tied to KPIs, budget clarity, and measurable outcomes.",
+    description:
+      "Security tied to KPIs, budget clarity, and measurable outcomes.",
   },
 ];
 
@@ -75,10 +111,20 @@ export default function HomePage() {
       <section className="relative min-h-[82vh] md:min-h-[88vh] flex items-center justify-center overflow-hidden">
         {/* Brand auras */}
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute top-[-6rem] left-[-6rem] h-[28rem] w-[28rem] rounded-full blur-3xl opacity-20"
-               style={{ background: "radial-gradient(closest-side, var(--primary) 0%, transparent 70%)" }} />
-          <div className="absolute bottom-[-6rem] right-[-6rem] h-[28rem] w-[28rem] rounded-full blur-3xl opacity-20"
-               style={{ background: "radial-gradient(closest-side, var(--accent) 0%, transparent 70%)" }} />
+          <div
+            className="absolute top-[-6rem] left-[-6rem] h-[28rem] w-[28rem] rounded-full blur-3xl opacity-20"
+            style={{
+              background:
+                "radial-gradient(closest-side, var(--primary) 0%, transparent 70%)",
+            }}
+          />
+          <div
+            className="absolute bottom-[-6rem] right-[-6rem] h-[28rem] w-[28rem] rounded-full blur-3xl opacity-20"
+            style={{
+              background:
+                "radial-gradient(closest-side, var(--accent) 0%, transparent 70%)",
+            }}
+          />
         </div>
 
         <div className="relative z-10 mx-auto max-w-7xl px-6 py-24 text-center">
@@ -103,13 +149,16 @@ export default function HomePage() {
             </p>
 
             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+              {/* WORKING CTA → /contact */}
               <Link
                 href="/contact"
+                prefetch
                 className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[color:var(--primary)] to-[color:var(--accent)] px-6 py-3 text-white shadow-lg transition hover:opacity-95"
               >
                 Get Started
                 <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
               </Link>
+
               <Link
                 href="/services"
                 className="inline-flex items-center rounded-xl border border-primary/40 px-6 py-3 text-white/90 hover:bg-primary/10 transition"
@@ -131,9 +180,12 @@ export default function HomePage() {
             transition={{ duration: 0.5 }}
             className="mb-12 text-center"
           >
-            <h2 className="text-4xl md:text-5xl font-bold">The Challenge We Solve</h2>
+            <h2 className="text-4xl md:text-5xl font-bold">
+              The Challenge We Solve
+            </h2>
             <p className="mx-auto mt-3 max-w-3xl text-gray-300">
-              Threats evolve daily. We counter them with automation, intelligence, and continuous testing.
+              Threats evolve daily. We counter them with automation, intelligence,
+              and continuous testing.
             </p>
           </motion.div>
 
@@ -184,9 +236,13 @@ export default function HomePage() {
                 transition={{ duration: 0.45, delay: i * 0.08 }}
                 className="group relative overflow-hidden rounded-2xl border border-primary/25 bg-[color:var(--secondary)] p-6"
               >
-                <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${s.color} opacity-0 transition-opacity duration-500 group-hover:opacity-10`} />
+                <div
+                  className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${s.color} opacity-0 transition-opacity duration-500 group-hover:opacity-10`}
+                />
                 <div className="relative">
-                  <div className={`mb-5 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br ${s.color} text-white`}>
+                  <div
+                    className={`mb-5 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br ${s.color} text-white`}
+                  >
                     <s.icon className="h-7 w-7" />
                   </div>
                   <div className="text-2xl font-bold">{s.title}</div>
@@ -208,9 +264,12 @@ export default function HomePage() {
             transition={{ duration: 0.5 }}
             className="mb-10"
           >
-            <h2 className="text-4xl md:text-5xl font-bold">Offensive Security Services</h2>
+            <h2 className="text-4xl md:text-5xl font-bold">
+              Offensive Security Services
+            </h2>
             <p className="mt-2 max-w-3xl text-gray-300">
-              Proactive identification and elimination of risk before adversaries strike.
+              Proactive identification and elimination of risk before adversaries
+              strike.
             </p>
           </motion.div>
 
@@ -262,9 +321,12 @@ export default function HomePage() {
             transition={{ duration: 0.5 }}
             className="mb-10"
           >
-            <h2 className="text-4xl md:text-5xl font-bold">Defensive Security Services</h2>
+            <h2 className="text-4xl md:text-5xl font-bold">
+              Defensive Security Services
+            </h2>
             <p className="mt-2 max-w-3xl text-gray-300">
-              Resilience by design: secure patterns, automation, and continuous assurance.
+              Resilience by design: secure patterns, automation, and continuous
+              assurance.
             </p>
           </motion.div>
 
@@ -273,25 +335,40 @@ export default function HomePage() {
               icon={Lock}
               title="Application Security"
               description="DevSecOps integration and CI/CD security automation for safe delivery."
-              features={["SAST/DAST integration", "Container security", "API testing", "Secure code review"]}
+              features={[
+                "SAST/DAST integration",
+                "Container security",
+                "API testing",
+                "Secure code review",
+              ]}
             />
             <ServiceCard
               icon={Cloud}
               title="Cloud Architecture Reviews"
               description="Security assessments for AWS/Azure/GCP landing zones and controls."
-              features={["Multi-cloud security", "IAM policy review", "Network segmentation", "Compliance validation"]}
+              features={[
+                "Multi-cloud security",
+                "IAM policy review",
+                "Network segmentation",
+                "Compliance validation",
+              ]}
             />
             <ServiceCard
               icon={TrendingUp}
               title="Strategy Consulting"
               description="AI-assisted roadmaps aligned to business KPI & budget impact."
-              features={["Maturity assessment", "Strategic roadmap", "Budget optimization", "Executive reporting"]}
+              features={[
+                "Maturity assessment",
+                "Strategic roadmap",
+                "Budget optimization",
+                "Executive reporting",
+              ]}
             />
           </div>
         </div>
       </section>
 
-      {/* HOW IT WORKS */}
+      {/* HOW IT WORKS (brand reds only) */}
       <section className="px-6 py-16 md:py-20">
         <div className="mx-auto max-w-7xl">
           <motion.div
@@ -303,7 +380,8 @@ export default function HomePage() {
           >
             <h2 className="text-4xl md:text-5xl font-bold">How ThreatVet Works</h2>
             <p className="mx-auto mt-3 max-w-3xl text-gray-300">
-              Continuous intelligence, client-specific testing, and automated response.
+              Continuous intelligence, client-specific testing, and automated
+              response.
             </p>
           </motion.div>
 
@@ -314,20 +392,26 @@ export default function HomePage() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.55 }}
-              className="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-500/10 to-sky-500/10 p-6"
+              className="rounded-2xl border border-[color:var(--primary)]/35 bg-gradient-to-br from-[color:var(--primary)]/12 to-[color:var(--accent)]/10 p-6"
             >
               <h3 className="mb-6 flex items-center gap-3 text-2xl font-bold">
-                <Brain className="h-7 w-7 text-blue-400" /> ThreatVet Data Intelligence
+                <Brain className="h-7 w-7 text-[color:var(--primary)]" />
+                ThreatVet Data Intelligence
               </h3>
               <ol className="space-y-4">
-                {["Global threat data aggregation","AI-powered pattern recognition","Vuln database updates","Signature & behavior analysis","Threat actor tracking"]
-                  .map((t, i) => (
-                    <li key={t} className="flex items-center gap-4">
-                      <span className="flex h-8 w-8 items-center justify-center rounded-full border border-blue-500/50 bg-blue-500/20 text-blue-300 font-semibold">
-                        {i + 1}
-                      </span>
-                      <span className="text-gray-200">{t}</span>
-                    </li>
+                {[
+                  "Global threat data aggregation",
+                  "AI-powered pattern recognition",
+                  "Vulnerability database updates",
+                  "Signature & behavior analysis",
+                  "Threat actor tracking",
+                ].map((t, i) => (
+                  <li key={t} className="flex items-center gap-4">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full border border-[color:var(--primary)]/50 bg-[color:var(--primary)]/20 text-[color:var(--primary)] font-semibold">
+                      {i + 1}
+                    </span>
+                    <span className="text-gray-200">{t}</span>
+                  </li>
                 ))}
               </ol>
             </motion.div>
@@ -338,20 +422,26 @@ export default function HomePage() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.55 }}
-              className="rounded-2xl border border-pink-500/30 bg-gradient-to-br from-pink-500/10 to-rose-500/10 p-6"
+              className="rounded-2xl border border-[color:var(--primary)]/35 bg-gradient-to-br from-[color:var(--accent)]/12 to-[color:var(--primary)]/10 p-6"
             >
               <h3 className="mb-6 flex items-center gap-3 text-2xl font-bold">
-                <Zap className="h-7 w-7 text-pink-400" /> Client Security Scanning
+                <Zap className="h-7 w-7 text-[color:var(--accent)]" />
+                Client Security Scanning
               </h3>
               <ol className="space-y-4">
-                {["Infrastructure assessment","Application security testing","Cloud configuration review","Compliance gap analysis","Custom remediation plans"]
-                  .map((t, i) => (
-                    <li key={t} className="flex items-center gap-4">
-                      <span className="flex h-8 w-8 items-center justify-center rounded-full border border-pink-500/50 bg-pink-500/20 text-pink-300 font-semibold">
-                        {i + 1}
-                      </span>
-                      <span className="text-gray-200">{t}</span>
-                    </li>
+                {[
+                  "Infrastructure assessment",
+                  "Application security testing",
+                  "Cloud configuration review",
+                  "Compliance gap analysis",
+                  "Custom remediation plans",
+                ].map((t, i) => (
+                  <li key={t} className="flex items-center gap-4">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full border border-[color:var(--primary)]/50 bg-[color:var(--primary)]/20 text-[color:var(--primary)] font-semibold">
+                      {i + 1}
+                    </span>
+                    <span className="text-gray-200">{t}</span>
+                  </li>
                 ))}
               </ol>
             </motion.div>
@@ -370,7 +460,9 @@ export default function HomePage() {
             className="mb-12 text-center"
           >
             <h2 className="text-4xl md:text-5xl font-bold">Why Choose ThreatVet</h2>
-            <p className="mx-auto mt-3 max-w-3xl text-gray-300">Enterprise-grade security with measurable outcomes.</p>
+            <p className="mx-auto mt-3 max-w-3xl text-gray-300">
+              Enterprise-grade security with measurable outcomes.
+            </p>
           </motion.div>
 
           <div className="grid gap-6 md:grid-cols-3">
@@ -383,8 +475,7 @@ export default function HomePage() {
                 transition={{ duration: 0.45, delay: i * 0.08 }}
                 className="group relative overflow-hidden rounded-2xl border border-primary/25 bg-[color:var(--secondary)] p-8 text-center"
               >
-                <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100
-                                bg-gradient-to-br from-[color:var(--primary)]/8 to-[color:var(--accent)]/8" />
+                <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-gradient-to-br from-[color:var(--primary)]/8 to-[color:var(--accent)]/8" />
                 <div className="relative z-10">
                   <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-xl bg-gradient-to-br from-[color:var(--primary)]/20 to-[color:var(--accent)]/20">
                     <v.icon className="h-10 w-10 text-[color:var(--primary)]" />
@@ -410,13 +501,18 @@ export default function HomePage() {
           >
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[color:var(--primary)]/10 to-[color:var(--accent)]/10" />
             <div className="relative z-10">
-              <h3 className="text-3xl md:text-4xl font-bold">Ready to Secure Your Digital Future?</h3>
+              <h3 className="text-3xl md:text-4xl font-bold">
+                Ready to Secure Your Digital Future?
+              </h3>
               <p className="mx-auto mt-3 max-w-2xl text-gray-200">
-                Start with a comprehensive assessment and uncover vulnerabilities before attackers do.
+                Start with a comprehensive assessment and uncover vulnerabilities
+                before attackers do.
               </p>
               <div className="mt-8 flex items-center justify-center gap-4">
+                {/* WORKING CTA → /contact */}
                 <Link
                   href="/contact"
+                  prefetch
                   className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[color:var(--primary)] to-[color:var(--accent)] px-6 py-3 text-white shadow-lg transition hover:opacity-95"
                 >
                   Schedule Consultation <ArrowRight className="h-5 w-5" />

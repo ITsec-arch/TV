@@ -1,79 +1,102 @@
-@import "tailwindcss";
-@plugin "tailwindcss-animate";
+import "./globals.css";
+import type { Metadata } from "next";
+import Link from "next/link";
+import Image from "next/image";
+import { Inter, JetBrains_Mono } from "next/font/google";
 
-/* Map Tailwind tokens -> CSS vars (v4 inline theme) */
-@custom-variant dark (&:is(.dark *));
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-}
+const geistSans = Inter({ subsets: ["latin"], variable: "--font-geist-sans" });
+const geistMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
 
-/* === ThreatVet Brand === */
-:root, .dark {
-  --background: #0b0b0b;
-  --foreground: #ffffff;
+export const metadata: Metadata = {
+  title: "ThreatVet — Cybersecurity 360°",
+  description: "Proactive, AI-driven security for modern enterprises.",
+  metadataBase: new URL("https://www.threatvet.com"),
+};
 
-  --primary: #ef4444;                 /* ThreatVet red */
-  --primary-foreground: #1a0909;
+const YEAR = 2025;
 
-  --accent: #f97316;                  /* warm orange */
-  --accent-foreground: #1a0a04;
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" className="dark" suppressHydrationWarning>
+      <body className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-background text-foreground antialiased`}>
+        {/* HEADER */}
+        <header className="sticky top-0 z-50 border-b border-white/10 bg-[color:var(--background)]/85 backdrop-blur-md">
+          <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 md:px-6 py-3">
+            {/* Logo (kept crisp, consistent height) */}
+            <Link href="/" className="flex items-center gap-3 shrink-0">
+              {/* Use your actual file name in /public */}
+              <Image
+                src="/logo.png"
+                alt="ThreatVet"
+                width={138}
+                height={32}
+                priority
+                className="h-7 w-auto"
+              />
+            </Link>
 
-  --secondary: #0f172a;               /* deep slate panel */
-  --secondary-foreground: #d1d5db;
+            {/* Nav */}
+            <div className="flex items-center gap-5 md:gap-6 text-sm">
+              <Link href="/" className="hover:text-[color:var(--primary)] transition-colors">Home</Link>
+              <Link href="/about" className="hover:text-[color:var(--primary)] transition-colors">About</Link>
+              <Link href="/services" className="hover:text-[color:var(--primary)] transition-colors">Services</Link>
+              <Link href="/intelligence" className="hover:text-[color:var(--primary)] transition-colors">Intelligence</Link>
+              <Link
+                href="/contact"
+                className="rounded-xl border border-[color:var(--primary)]/45 px-3 py-2 text-[color:var(--primary)] hover:bg-[color:var(--primary)]/10 transition-colors"
+              >
+                Contact
+              </Link>
+              <Link
+                href="/contact"
+                className="rounded-xl px-3 py-2 btn-brand transition"
+                prefetch
+              >
+                Get Started
+              </Link>
+            </div>
+          </nav>
+        </header>
 
-  --border: #1f2937;
-  --input: #0f172a;
-  --ring: var(--primary);
+        {/* PAGE */}
+        <main className="soft-grid">{children}</main>
 
-  --radius: 0.75rem;
-}
+        {/* FOOTER */}
+        <footer className="border-t border-white/10 bg-[color:var(--background)]">
+          <div className="mx-auto max-w-7xl px-6 py-10 grid gap-8 md:grid-cols-3">
+            <div className="space-y-4">
+              <Image src="/logo.png" alt="ThreatVet" width={160} height={34} className="h-8 w-auto" />
+              <p className="text-sm text-neutral-300">
+                Delivering comprehensive, AI-driven cybersecurity solutions for modern enterprises.
+                Protect your digital assets with 360° coverage.
+              </p>
+            </div>
 
-/* Base */
-@layer base {
-  * { @apply border-border outline-ring/50; }
-  html, body { @apply bg-background text-foreground; }
-}
+            <div>
+              <div className="font-semibold mb-3">Quick Links</div>
+              <ul className="space-y-2 text-sm text-neutral-300">
+                <li><Link className="hover:text-[color:var(--primary)]" href="/">Home</Link></li>
+                <li><Link className="hover:text-[color:var(--primary)]" href="/about">About</Link></li>
+                <li><Link className="hover:text-[color:var(--primary)]" href="/services">Services</Link></li>
+                <li><Link className="hover:text-[color:var(--primary)]" href="/intelligence">Intelligence</Link></li>
+                <li><Link className="hover:text-[color:var(--primary)]" href="/contact">Contact</Link></li>
+              </ul>
+            </div>
 
-/* Subtle grid + branded glow */
-.soft-grid {
-  position: relative;
-  background:
-    radial-gradient(900px 420px at 50% -120px,
-      color-mix(in oklab, var(--primary) 16%, transparent), transparent 55%),
-    radial-gradient(800px 360px at 100% 0%,
-      color-mix(in oklab, var(--accent) 10%, transparent), transparent 65%),
-    var(--background);
-}
-.soft-grid::before {
-  content: "";
-  position: absolute; inset: 0; pointer-events: none;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
-  background-size: 44px 44px;
-  mask-image: radial-gradient(1000px 540px at 50% 0%, rgba(255,255,255,.7), transparent 60%);
-}
-
-/* Headline glow */
-.glow {
-  text-shadow:
-    0 0 18px color-mix(in oklab, var(--primary) 55%, transparent),
-    0 0 36px color-mix(in oklab, var(--accent) 45%, transparent);
-}
-
-/* Section wrapper for consistent page spacing */
-.section {
-  @apply mx-auto max-w-7xl px-6 py-20;
+            <div>
+              <div className="font-semibold mb-3">Contact</div>
+              <ul className="space-y-2 text-sm text-neutral-300">
+                <li>info@threatvet.com</li>
+                <li>+91 93453 40430</li>
+                <li>Chennai, India (HQ) • UAE • USA</li>
+              </ul>
+            </div>
+          </div>
+          <div className="border-t border-white/10 py-4 text-center text-xs text-neutral-400">
+            © {YEAR} ThreatVet. All rights reserved. | Guardians of your digital realm
+          </div>
+        </footer>
+      </body>
+    </html>
+  );
 }
