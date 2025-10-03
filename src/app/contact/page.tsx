@@ -1,55 +1,56 @@
 "use client";
 
-import { useState } from "react";
-import { Mail, Phone, MapPin, Send, CheckCircle2, AlertCircle } from "lucide-react";
+import React from "react";
+import { Mail, Phone, MapPin, Send } from "lucide-react";
 
-type FormState = "idle" | "loading" | "success" | "error";
+type FormState = {
+  name: string;
+  email: string;
+  company: string;
+  phone: string;
+  message: string;
+};
 
 export default function ContactPage() {
-  const [state, setState] = useState<FormState>("idle");
-  const [error, setError] = useState<string | null>(null);
+  const [form, setForm] = React.useState<FormState>({
+    name: "",
+    email: "",
+    company: "",
+    phone: "",
+    message: "",
+  });
+  const [loading, setLoading] = React.useState(false);
+  const [status, setStatus] = React.useState<"idle" | "ok" | "error">("idle");
 
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const onChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setState("loading");
-    setError(null);
-
-    const form = new FormData(e.currentTarget);
-
-    // Basic client-side validation (HTML5 `required` still applies)
-    const name = String(form.get("name") || "").trim();
-    const email = String(form.get("email") || "").trim();
-    const company = String(form.get("company") || "").trim();
-    const phone = String(form.get("phone") || "").trim();
-    const message = String(form.get("message") || "").trim();
-
-    // Simple honeypot (hidden field). If filled, drop the submit.
-    const hp = String(form.get("website") || "");
-    if (hp) {
-      setState("success"); // act as if it worked (don’t tip off bots)
-      (e.target as HTMLFormElement).reset();
-      return;
-    }
+    setLoading(true);
+    setStatus("idle");
 
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, company, phone, message }),
+        body: JSON.stringify(form),
       });
 
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data?.ok) {
-        throw new Error(data?.error || "Failed to send message. Please try again.");
-      }
+      if (!res.ok) throw new Error("Request failed");
 
-      setState("success");
-      (e.target as HTMLFormElement).reset();
-    } catch (err: any) {
-      setError(err?.message || "Unexpected error");
-      setState("error");
+      setStatus("ok");
+      setForm({ name: "", email: "", company: "", phone: "", message: "" });
+    } catch {
+      setStatus("error");
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <main className="soft-grid">
@@ -57,7 +58,8 @@ export default function ContactPage() {
       <section className="px-6 pt-16 pb-6 md:pt-24 md:pb-10 text-center">
         <h1 className="text-5xl md:text-6xl font-extrabold glow">Get In Touch</h1>
         <p className="mx-auto mt-4 max-w-2xl text-gray-300">
-          Ready to secure your digital future? Let’s discuss your cybersecurity needs.
+          Ready to secure your digital future? Let’s discuss your cybersecurity
+          needs.
         </p>
       </section>
 
@@ -76,7 +78,9 @@ export default function ContactPage() {
                 <div>
                   <div className="font-semibold">Email</div>
                   <div className="text-gray-300">info@threatvet.com</div>
-                  <div className="text-xs text-gray-400">General inquiries & support</div>
+                  <div className="text-xs text-gray-400">
+                    General inquiries & support
+                  </div>
                 </div>
               </div>
 
@@ -98,7 +102,9 @@ export default function ContactPage() {
                 <div>
                   <div className="font-semibold">Locations</div>
                   <div className="text-gray-300">Chennai, India (HQ) • UAE • USA</div>
-                  <div className="text-xs text-gray-400">Serving enterprises worldwide</div>
+                  <div className="text-xs text-gray-400">
+                    Serving enterprises worldwide
+                  </div>
                 </div>
               </div>
             </div>
@@ -119,49 +125,31 @@ export default function ContactPage() {
 
           {/* Right: Form */}
           <form
-            className="rounded-2xl border border-primary/25 bg-[color:var(--secondary)] p-6 space-y-4"
             onSubmit={onSubmit}
+            className="rounded-2xl border border-primary/25 bg-[color:var(--secondary)] p-6 space-y-4"
           >
             <h2 className="text-2xl font-bold mb-2">Send us a Message</h2>
 
-            {/* success & error banners */}
-            {state === "success" && (
-              <div className="flex items-center gap-2 rounded-xl border border-green-500/30 bg-green-500/10 px-3 py-2 text-green-300">
-                <CheckCircle2 className="h-5 w-5" />
-                <span>Thanks! We’ve received your message and emailed a confirmation.</span>
-              </div>
-            )}
-            {state === "error" && (
-              <div className="flex items-center gap-2 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-red-300">
-                <AlertCircle className="h-5 w-5" />
-                <span>{error}</span>
-              </div>
-            )}
-
             <div className="grid gap-4 md:grid-cols-2">
               <div>
-                <label htmlFor="name" className="text-sm text-gray-300">
-                  Full Name *
-                </label>
+                <label className="text-sm text-gray-300">Full Name *</label>
                 <input
-                  id="name"
-                  name="name"
                   required
-                  autoComplete="name"
+                  name="name"
+                  value={form.name}
+                  onChange={onChange}
                   className="mt-1 w-full rounded-xl bg-background/60 border border-primary/25 px-3 py-2 outline-none focus:border-primary/60"
                   placeholder="John Doe"
                 />
               </div>
               <div>
-                <label htmlFor="email" className="text-sm text-gray-300">
-                  Email Address *
-                </label>
+                <label className="text-sm text-gray-300">Email Address *</label>
                 <input
-                  id="email"
-                  name="email"
                   required
                   type="email"
-                  autoComplete="email"
+                  name="email"
+                  value={form.email}
+                  onChange={onChange}
                   className="mt-1 w-full rounded-xl bg-background/60 border border-primary/25 px-3 py-2 outline-none focus:border-primary/60"
                   placeholder="john@company.com"
                 />
@@ -170,24 +158,21 @@ export default function ContactPage() {
 
             <div className="grid gap-4 md:grid-cols-2">
               <div>
-                <label htmlFor="company" className="text-sm text-gray-300">
-                  Company
-                </label>
+                <label className="text-sm text-gray-300">Company</label>
                 <input
-                  id="company"
                   name="company"
+                  value={form.company}
+                  onChange={onChange}
                   className="mt-1 w-full rounded-xl bg-background/60 border border-primary/25 px-3 py-2 outline-none focus:border-primary/60"
                   placeholder="Company Name"
                 />
               </div>
               <div>
-                <label htmlFor="phone" className="text-sm text-gray-300">
-                  Phone
-                </label>
+                <label className="text-sm text-gray-300">Phone</label>
                 <input
-                  id="phone"
                   name="phone"
-                  autoComplete="tel"
+                  value={form.phone}
+                  onChange={onChange}
                   className="mt-1 w-full rounded-xl bg-background/60 border border-primary/25 px-3 py-2 outline-none focus:border-primary/60"
                   placeholder="+91 93453 40430"
                 />
@@ -195,37 +180,39 @@ export default function ContactPage() {
             </div>
 
             <div>
-              <label htmlFor="message" className="text-sm text-gray-300">
-                Message *
-              </label>
+              <label className="text-sm text-gray-300">Message *</label>
               <textarea
-                id="message"
-                name="message"
                 required
                 rows={6}
+                name="message"
+                value={form.message}
+                onChange={onChange}
                 className="mt-1 w-full rounded-xl bg-background/60 border border-primary/25 px-3 py-2 outline-none focus:border-primary/60"
                 placeholder="Tell us about your cybersecurity needs…"
               />
             </div>
 
-            {/* Honeypot (hidden) */}
-            <input
-              type="text"
-              name="website"
-              autoComplete="off"
-              tabIndex={-1}
-              className="hidden"
-            />
-
             <button
               type="submit"
-              disabled={state === "loading"}
+              disabled={loading}
               className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[color:var(--primary)] to-[color:var(--accent)] px-5 py-3 text-white transition hover:opacity-95 disabled:opacity-60"
               aria-label="Send Message"
             >
               <Send className="h-5 w-5" />
-              {state === "loading" ? "Sending…" : "Send Message"}
+              {loading ? "Sending…" : "Send Message"}
             </button>
+
+            {status === "ok" && (
+              <p className="text-sm text-green-400">
+                Thanks! We’ll get back to you shortly.
+              </p>
+            )}
+            {status === "error" && (
+              <p className="text-sm text-rose-400">
+                Sorry, something went wrong. Please email{" "}
+                <span className="underline">info@threatvet.com</span>.
+              </p>
+            )}
           </form>
         </div>
       </section>
