@@ -3,6 +3,10 @@ import type { Metadata } from "next";
 import { Container } from "@/components/site/Container";
 import { JsonLd } from "@/components/site/JsonLd";
 import { PhaseFlow, type Phase } from "@/components/site/PhaseFlow";
+import { ProbeMatrix } from "@/components/site/ProbeMatrix";
+import { HeroBackdrop } from "@/components/motion/HeroBackdrop";
+import { CountUp } from "@/components/motion/CountUp";
+import { Appear } from "@/components/motion/Appear";
 import { Button } from "@/components/ui/button";
 import { pageMetadata, softwareApplicationLd } from "@/lib/seo";
 
@@ -40,9 +44,9 @@ const probes = [
 ];
 
 const specs = [
-  { n: "11", label: "phases, pt-00 to pt-09" },
-  { n: "27", label: "probe categories" },
-  { n: "3", label: "report formats" },
+  { value: 11, suffix: "", label: "phases, pt-00 to pt-09" },
+  { value: 27, suffix: "", label: "probe categories" },
+  { value: 3, suffix: "", label: "report formats" },
 ];
 
 export default function ProductPage() {
@@ -58,34 +62,42 @@ export default function ProductPage() {
       />
 
       {/* HERO */}
-      <section className="relative overflow-hidden border-b border-line">
-        <div className="pointer-events-none absolute inset-0 grid-faint opacity-70" aria-hidden />
-        <Container className="relative py-16 md:py-24">
+      <section className="grain relative overflow-hidden border-b border-line">
+        <HeroBackdrop />
+        <Container className="relative z-10 py-16 md:py-24">
           <div className="max-w-3xl">
-            <div className="flex items-center gap-2 text-sm text-fg-subtle">
+            <div className="rise flex items-center gap-2 text-sm text-fg-subtle">
               <span className="font-mono text-red">vyra</span>
               <span aria-hidden>/</span>
               <span>the engine behind our engagements</span>
             </div>
-            <h1 className="mt-5 text-4xl font-semibold leading-[1.05] tracking-tight text-fg sm:text-5xl md:text-6xl">
-              Our autonomous offensive-testing engine.
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-fg-muted">
-              Vyra runs a disciplined, repeatable pipeline across the attack surface,
-              so coverage does not depend on which day of the week a tester got to
-              your target. A human operator drives exploitation and judgement. Vyra
-              does not replace manual testing. It makes the manual testing count.
-            </p>
-            <dl className="mt-8 flex flex-wrap gap-x-10 gap-y-4">
-              {specs.map((s) => (
-                <div key={s.label}>
-                  <dt className="text-3xl font-semibold text-fg">{s.n}</dt>
-                  <dd className="mt-0.5 text-sm text-fg-muted">{s.label}</dd>
-                </div>
-              ))}
-            </dl>
-            <div className="mt-8">
-              <Button asChild size="lg"><Link href="/contact?topic=consulting">Put Vyra on your engagement</Link></Button>
+            <div className="rise rise-2">
+              <h1 className="mt-5 text-4xl font-semibold leading-[1.05] tracking-tight text-fg sm:text-5xl md:text-6xl">
+                Our autonomous offensive-testing engine.
+              </h1>
+            </div>
+            <div className="rise rise-3">
+              <p className="mt-6 max-w-2xl text-lg leading-relaxed text-fg-muted">
+                Vyra runs a disciplined, repeatable pipeline across the attack surface,
+                so coverage does not depend on which day of the week a tester got to
+                your target. A human operator drives exploitation and judgement. Vyra
+                does not replace manual testing. It makes the manual testing count.
+              </p>
+            </div>
+            <div className="rise rise-4">
+              <dl className="mt-8 flex flex-wrap gap-x-10 gap-y-4">
+                {specs.map((s) => (
+                  <div key={s.label}>
+                    <dt className="text-3xl font-semibold text-fg">
+                      <CountUp value={s.value} suffix={s.suffix} />
+                    </dt>
+                    <dd className="mt-0.5 text-sm text-fg-muted">{s.label}</dd>
+                  </div>
+                ))}
+              </dl>
+              <div className="mt-8">
+                <Button asChild size="lg" className="cta-rich"><Link href="/contact?topic=consulting">Put Vyra on your engagement</Link></Button>
+              </div>
             </div>
           </div>
         </Container>
@@ -95,7 +107,7 @@ export default function ProductPage() {
       <section className="border-b border-line">
         <Container className="py-16 md:py-20">
           <div className="grid gap-12 md:grid-cols-2">
-            <div>
+            <Appear preset="left">
               <h2 className="text-2xl font-semibold tracking-tight text-fg sm:text-3xl">What Vyra is</h2>
               <p className="mt-5 text-base leading-relaxed text-fg-muted">
                 An orchestration engine that runs the broad, repeatable parts of an
@@ -103,8 +115,8 @@ export default function ProductPage() {
                 categories. It gives every engagement the same floor of coverage,
                 and it flags candidates for a human to confirm and exploit.
               </p>
-            </div>
-            <div>
+            </Appear>
+            <Appear preset="up">
               <h2 className="text-2xl font-semibold tracking-tight text-fg sm:text-3xl">What it is not</h2>
               <p className="mt-5 text-base leading-relaxed text-fg-muted">
                 It is not a replacement for a tester. Automation is good at breadth
@@ -112,7 +124,7 @@ export default function ProductPage() {
                 senior operator. We are explicit about this because the opposite
                 claim is how automated testing earns its bad name.
               </p>
-            </div>
+            </Appear>
           </div>
         </Container>
       </section>
@@ -120,11 +132,13 @@ export default function ProductPage() {
       {/* PHASE FLOW */}
       <section className="border-b border-line">
         <Container className="py-16 md:py-20">
-          <h2 className="text-2xl font-semibold tracking-tight text-fg sm:text-3xl">The pipeline</h2>
-          <p className="mt-4 max-w-2xl text-base text-fg-muted">
-            Eleven phases from scope to report. Phase pt-05b is a validation branch:
-            a candidate is confirmed before it is ever trusted or exploited.
-          </p>
+          <Appear preset="up">
+            <h2 className="text-2xl font-semibold tracking-tight text-fg sm:text-3xl">The pipeline</h2>
+            <p className="mt-4 max-w-2xl text-base text-fg-muted">
+              Eleven phases from scope to report. Phase pt-05b is a validation branch:
+              a candidate is confirmed before it is ever trusted or exploited.
+            </p>
+          </Appear>
           <div className="mt-10 max-w-2xl">
             <PhaseFlow phases={phases} />
           </div>
@@ -134,18 +148,15 @@ export default function ProductPage() {
       {/* PROBE CATEGORIES */}
       <section className="border-b border-line">
         <Container className="py-16 md:py-20">
-          <h2 className="text-2xl font-semibold tracking-tight text-fg sm:text-3xl">Probe categories</h2>
-          <p className="mt-4 max-w-2xl text-base text-fg-muted">
-            The 27 categories Vyra covers on a web and API engagement.
-          </p>
-          <ul className="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
-            {probes.map((p, i) => (
-              <li key={p} className="flex items-center gap-3 bg-surface px-4 py-3">
-                <span className="font-mono text-xs text-fg-subtle">{String(i + 1).padStart(2, "0")}</span>
-                <span className="text-sm text-fg">{p}</span>
-              </li>
-            ))}
-          </ul>
+          <Appear preset="up">
+            <h2 className="text-2xl font-semibold tracking-tight text-fg sm:text-3xl">Probe categories</h2>
+            <p className="mt-4 max-w-2xl text-base text-fg-muted">
+              The 27 categories Vyra covers on a web and API engagement.
+            </p>
+          </Appear>
+          <div className="mt-10">
+            <ProbeMatrix probes={probes} />
+          </div>
         </Container>
       </section>
 
@@ -153,7 +164,7 @@ export default function ProductPage() {
       <section className="border-b border-line">
         <Container className="py-16 md:py-20">
           <div className="grid gap-12 md:grid-cols-2">
-            <div>
+            <Appear preset="left">
               <h2 className="text-2xl font-semibold tracking-tight text-fg sm:text-3xl">How it fits your stack</h2>
               <p className="mt-5 text-base leading-relaxed text-fg-muted">
                 Vyra orchestrates proven tools, including browser automation and an
@@ -166,15 +177,15 @@ export default function ProductPage() {
                   <li key={f} className="rounded border border-line bg-surface px-2.5 py-1 font-mono text-xs text-fg-muted">{f}</li>
                 ))}
               </ul>
-            </div>
-            <div>
+            </Appear>
+            <Appear preset="up">
               <h2 className="text-2xl font-semibold tracking-tight text-fg sm:text-3xl">Where it is going</h2>
               <p className="mt-5 text-base leading-relaxed text-fg-muted">
                 The direction is continuous: recurring runs that watch a surface over
                 time, so a new exposure is caught when it appears rather than at the
                 next annual test. Human-led exploitation stays part of the loop.
               </p>
-            </div>
+            </Appear>
           </div>
         </Container>
       </section>
@@ -182,20 +193,23 @@ export default function ProductPage() {
       {/* CTA */}
       <section>
         <Container className="py-16 md:py-24">
-          <div className="rounded-lg border border-line bg-surface p-8 md:p-12">
-            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-              <div className="max-w-xl">
-                <h2 className="text-2xl font-semibold tracking-tight text-fg sm:text-3xl">See Vyra on your next engagement</h2>
-                <p className="mt-3 text-base text-fg-muted">
-                  Vyra ships as part of our testing, not as a box to run yourself.
-                  Scope an engagement and it does the heavy lifting underneath.
-                </p>
-              </div>
-              <div className="shrink-0">
-                <Button asChild size="lg"><Link href="/contact?topic=consulting">Request a scoped quote</Link></Button>
+          <Appear preset="scale">
+            <div className="relative overflow-hidden rounded-lg border border-line bg-surface p-8 md:p-12">
+              <div className="glow-drift pointer-events-none" style={{ top: "-40%", right: "-10%", width: "26rem", height: "26rem", opacity: 0.12 }} aria-hidden />
+              <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+                <div className="max-w-xl">
+                  <h2 className="text-2xl font-semibold tracking-tight text-fg sm:text-3xl">See Vyra on your next engagement</h2>
+                  <p className="mt-3 text-base text-fg-muted">
+                    Vyra ships as part of our testing, not as a box to run yourself.
+                    Scope an engagement and it does the heavy lifting underneath.
+                  </p>
+                </div>
+                <div className="shrink-0">
+                  <Button asChild size="lg" className="cta-rich"><Link href="/contact?topic=consulting">Request a scoped quote</Link></Button>
+                </div>
               </div>
             </div>
-          </div>
+          </Appear>
         </Container>
       </section>
     </>
