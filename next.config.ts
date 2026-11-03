@@ -1,7 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  async redirects() {
+    return [
+      // Legacy route retired; threat intelligence now lives under research.
+      { source: "/intelligence", destination: "/research", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;
