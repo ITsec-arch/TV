@@ -1,221 +1,91 @@
-"use client";
+import type { Metadata } from "next";
+import { Container } from "@/components/site/Container";
+import { JsonLd } from "@/components/site/JsonLd";
+import { ContactForm, type EnquiryTopic } from "@/components/site/ContactForm";
+import { pageMetadata, organizationLd } from "@/lib/seo";
+import { site } from "@/lib/site";
 
-import React from "react";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+const PATH = "/contact";
 
-type FormState = {
-  name: string;
-  email: string;
-  company: string;
-  phone: string;
-  message: string;
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Contact ThreatVet",
+  description:
+    "Start an engagement, enquire about a package, or ask about training. Email info@threatvet.com or send a message. We reply within one business day.",
+  path: PATH,
+});
 
-export default function ContactPage() {
-  const [form, setForm] = React.useState<FormState>({
-    name: "",
-    email: "",
-    company: "",
-    phone: "",
-    message: "",
-  });
-  const [loading, setLoading] = React.useState(false);
-  const [status, setStatus] = React.useState<"idle" | "ok" | "error">("idle");
+const VALID: EnquiryTopic[] = ["consulting", "packages", "academy", "general"];
 
-  const onChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoading(true);
-    setStatus("idle");
-
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-
-      if (!res.ok) throw new Error("Request failed");
-
-      setStatus("ok");
-      setForm({ name: "", email: "", company: "", phone: "", message: "" });
-    } catch {
-      setStatus("error");
-    } finally {
-      setLoading(false);
-    }
-  };
+export default async function ContactPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ topic?: string }>;
+}) {
+  const { topic } = await searchParams;
+  const defaultTopic: EnquiryTopic = VALID.includes(topic as EnquiryTopic)
+    ? (topic as EnquiryTopic)
+    : "general";
 
   return (
-    <main className="soft-grid">
-      {/* Hero */}
-      <section className="px-6 pt-16 pb-6 md:pt-24 md:pb-10 text-center">
-        <h1 className="text-5xl md:text-6xl font-extrabold glow">Get In Touch</h1>
-        <p className="mx-auto mt-4 max-w-2xl text-gray-300">
-          Ready to secure your digital future? Let’s discuss your cybersecurity
-          needs.
-        </p>
-      </section>
+    <>
+      <JsonLd data={organizationLd()} />
 
-      {/* Content */}
-      <section className="px-6 pb-20">
-        <div className="mx-auto grid max-w-7xl gap-6 md:grid-cols-2">
-          {/* Left: Contact info */}
-          <div className="rounded-2xl border border-primary/25 bg-[color:var(--secondary)] p-6">
-            <h2 className="text-2xl font-bold mb-6">Contact Information</h2>
-
-            <div className="space-y-5">
-              <div className="flex items-start gap-3">
-                <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-primary/40 bg-primary/10 text-primary">
-                  <Mail className="h-5 w-5" />
-                </div>
-                <div>
-                  <div className="font-semibold">Email</div>
-                  <div className="text-gray-300">info@threatvet.com</div>
-                  <div className="text-xs text-gray-400">
-                    General inquiries & support
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-primary/40 bg-primary/10 text-primary">
-                  <Phone className="h-5 w-5" />
-                </div>
-                <div>
-                  <div className="font-semibold">Phone</div>
-                  <div className="text-gray-300">+91 93453 40430</div>
-                  <div className="text-xs text-gray-400">24/7 Emergency Hotline</div>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-primary/40 bg-primary/10 text-primary">
-                  <MapPin className="h-5 w-5" />
-                </div>
-                <div>
-                  <div className="font-semibold">Locations</div>
-                  <div className="text-gray-300">Chennai, India (HQ) • UAE • USA</div>
-                  <div className="text-xs text-gray-400">
-                    Serving enterprises worldwide
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-8 rounded-2xl border border-primary/20 bg-background/50 p-5">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="font-semibold">Business Hours</div>
-                  <div className="text-sm text-gray-300">Monday – Sunday</div>
-                </div>
-                <div className="text-right font-semibold">24/7</div>
-              </div>
-              <p className="mt-3 text-sm text-primary">
-                Round-the-clock security monitoring and incident response
-              </p>
-            </div>
+      <section className="border-b border-line">
+        <Container className="py-16 md:py-20">
+          <div className="max-w-2xl">
+            <h1 className="text-4xl font-semibold leading-[1.05] tracking-tight text-fg sm:text-5xl">
+              Tell us what you need.
+            </h1>
+            <p className="mt-5 text-lg leading-relaxed text-fg-muted">
+              Whether it is a scoped engagement, a fixed package, or training, start
+              here. Pick what it is about so it reaches the right person, and we will
+              reply within one business day.
+            </p>
           </div>
-
-          {/* Right: Form */}
-          <form
-            onSubmit={onSubmit}
-            className="rounded-2xl border border-primary/25 bg-[color:var(--secondary)] p-6 space-y-4"
-          >
-            <h2 className="text-2xl font-bold mb-2">Send us a Message</h2>
-
-            <div className="grid gap-4 md:grid-cols-2">
-              <div>
-                <label className="text-sm text-gray-300">Full Name *</label>
-                <input
-                  required
-                  name="name"
-                  value={form.name}
-                  onChange={onChange}
-                  className="mt-1 w-full rounded-xl bg-background/60 border border-primary/25 px-3 py-2 outline-none focus:border-primary/60"
-                  placeholder="John Doe"
-                />
-              </div>
-              <div>
-                <label className="text-sm text-gray-300">Email Address *</label>
-                <input
-                  required
-                  type="email"
-                  name="email"
-                  value={form.email}
-                  onChange={onChange}
-                  className="mt-1 w-full rounded-xl bg-background/60 border border-primary/25 px-3 py-2 outline-none focus:border-primary/60"
-                  placeholder="john@company.com"
-                />
-              </div>
-            </div>
-
-            <div className="grid gap-4 md:grid-cols-2">
-              <div>
-                <label className="text-sm text-gray-300">Company</label>
-                <input
-                  name="company"
-                  value={form.company}
-                  onChange={onChange}
-                  className="mt-1 w-full rounded-xl bg-background/60 border border-primary/25 px-3 py-2 outline-none focus:border-primary/60"
-                  placeholder="Company Name"
-                />
-              </div>
-              <div>
-                <label className="text-sm text-gray-300">Phone</label>
-                <input
-                  name="phone"
-                  value={form.phone}
-                  onChange={onChange}
-                  className="mt-1 w-full rounded-xl bg-background/60 border border-primary/25 px-3 py-2 outline-none focus:border-primary/60"
-                  placeholder="+91 93453 40430"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="text-sm text-gray-300">Message *</label>
-              <textarea
-                required
-                rows={6}
-                name="message"
-                value={form.message}
-                onChange={onChange}
-                className="mt-1 w-full rounded-xl bg-background/60 border border-primary/25 px-3 py-2 outline-none focus:border-primary/60"
-                placeholder="Tell us about your cybersecurity needs…"
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[color:var(--primary)] to-[color:var(--accent)] px-5 py-3 text-white transition hover:opacity-95 disabled:opacity-60"
-              aria-label="Send Message"
-            >
-              <Send className="h-5 w-5" />
-              {loading ? "Sending…" : "Send Message"}
-            </button>
-
-            {status === "ok" && (
-              <p className="text-sm text-green-400">
-                Thanks! We’ll get back to you shortly.
-              </p>
-            )}
-            {status === "error" && (
-              <p className="text-sm text-rose-400">
-                Sorry, something went wrong. Please email{" "}
-                <span className="underline">info@threatvet.com</span>.
-              </p>
-            )}
-          </form>
-        </div>
+        </Container>
       </section>
-    </main>
+
+      <section>
+        <Container className="py-16 md:py-20">
+          <div className="grid gap-12 lg:grid-cols-[1fr_0.8fr]">
+            <div className="order-2 lg:order-1">
+              <ContactForm defaultTopic={defaultTopic} />
+            </div>
+
+            <aside className="order-1 space-y-8 lg:order-2">
+              <div>
+                <h2 className="text-sm font-semibold text-fg-subtle">Direct</h2>
+                <ul className="mt-3 space-y-2 text-sm">
+                  <li>
+                    <a className="text-fg hover:text-red-bright" href={`mailto:${site.email}`}>{site.email}</a>
+                  </li>
+                  <li>
+                    <a className="text-fg hover:text-red-bright" href={site.phoneHref}>{site.phone}</a>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h2 className="text-sm font-semibold text-fg-subtle">Offices</h2>
+                <ul className="mt-3 space-y-1 text-sm text-fg-muted">
+                  {site.locations.map((l) => (
+                    <li key={l.city}>
+                      {l.city}
+                      {l.note ? <span className="text-fg-subtle"> &middot; {l.note}</span> : null}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h2 className="text-sm font-semibold text-fg-subtle">Response</h2>
+                <p className="mt-3 text-sm text-fg-muted">
+                  We reply within one business day. For a scoped quote, a sentence or
+                  two about what you are building is enough to start.
+                </p>
+              </div>
+            </aside>
+          </div>
+        </Container>
+      </section>
+    </>
   );
 }

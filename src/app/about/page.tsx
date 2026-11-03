@@ -1,153 +1,151 @@
-"use client";
+import Link from "next/link";
+import type { Metadata } from "next";
+import { Container } from "@/components/site/Container";
+import { JsonLd } from "@/components/site/JsonLd";
+import { Button } from "@/components/ui/button";
+import { pageMetadata, organizationLd, professionalServiceLd } from "@/lib/seo";
+import { site } from "@/lib/site";
 
-import { Building2, Shield, Target, Users, Globe, MapPin, Zap, CheckCircle2 } from "lucide-react";
+const PATH = "/about";
 
-type Value = { icon: React.ReactNode; title: string; text: string };
-type Metric = { value: string; label: string };
-type Capability = { icon: React.ReactNode; title: string; text: string };
-type Office = { country: string; city: string; role: string; blurb: string };
+export const metadata: Metadata = pageMetadata({
+  title: "About ThreatVet",
+  description:
+    "ThreatVet is a boutique, practitioner-led offensive security and threat intelligence firm. Senior testers on every engagement, verifiable research, and offices in Chennai, the UAE and the USA.",
+  path: PATH,
+});
 
-const values: Value[] = [
-  { icon: <Target className="h-6 w-6" />, title: "Proactive Protection", text: "We identify and reduce risk before attackers can exploit it." },
-  { icon: <Zap className="h-6 w-6" />, title: "Innovation First", text: "AI-assisted analysis and automation to stay ahead of evolving threats." },
-  { icon: <Users className="h-6 w-6" />, title: "Client Partnership", text: "Security strategies aligned to business outcomes and ROI." },
+const principles = [
+  { title: "Senior testers, every time", body: "A small team by design. The person who scopes your work is the person who does it. No handoff to juniors." },
+  { title: "Proof over claims", body: "We would rather show you a credited CVE than a logo wall. If we say we found something, you can reproduce it." },
+  { title: "Honest about automation", body: "Our engine widens coverage. People drive exploitation and judgement. We never pretend a tool replaces a tester." },
+  { title: "Plain reports", body: "Findings a developer can act on: what, where, why it matters, and how to fix it." },
 ];
 
-const metrics: Metric[] = [
-  { value: "500+", label: "Clients Protected" },
-  { value: "10M+", label: "Threats Blocked" },
-  { value: "99.9%", label: "Uptime SLA" },
-  { value: "24/7", label: "Security Monitoring" },
-];
-
-const capabilities: Capability[] = [
-  { icon: <Globe className="h-5 w-5" />, title: "Global Threat Intelligence", text: "Real-time monitoring of global threat landscapes with AI-powered analysis." },
-  { icon: <Shield className="h-5 w-5" />, title: "Certified Professionals", text: "CISSP, CEH, OSCP and cloud-certified experts with decades of experience." },
-  { icon: <Shield className="h-5 w-5" />, title: "Compliance Excellence", text: "Deep expertise in GDPR, HIPAA, PCI-DSS, SOC 2, and ISO 27001." },
-  { icon: <Zap className="h-5 w-5" />, title: "Rapid Response", text: "Incident response team ready to deploy within hours of detection." },
-];
-
-const offices: Office[] = [
-  {
-    country: "India",
-    city: "Chennai",
-    role: "Headquarters (Main)",
-    blurb: "Security operations, R&D, red/purple teaming, and global program delivery.",
-  },
-  {
-    country: "United Arab Emirates",
-    city: "UAE",
-    role: "Regional Office",
-    blurb: "GCC customer delivery, executive advisory, and compliance engagements.",
-  },
-  {
-    country: "United States",
-    city: "USA",
-    role: "Regional Office",
-    blurb: "North America customer success, incident response, and partnerships.",
-  },
+const experience = [
+  { k: "10+ years", v: "in offensive security" },
+  { k: "~9 years", v: "building software before that" },
+  { k: "3 years", v: "in Gulf government cybersecurity" },
 ];
 
 export default function AboutPage() {
   return (
-    <main className="soft-grid">
-      {/* HERO */}
-      <section className="relative mx-auto max-w-7xl px-6 pt-20 pb-8 text-center">
-        <h1 className="text-5xl md:text-6xl font-bold glow">About ThreatVet</h1>
-        <p className="mx-auto mt-4 max-w-3xl text-gray-300">
-          We are the guardians of your digital realm, protecting enterprises with 360° cybersecurity excellence.
-        </p>
-      </section>
+    <>
+      <JsonLd data={[organizationLd(), professionalServiceLd()]} />
 
-      {/* MISSION */}
-      <section className="mx-auto max-w-7xl px-6 pb-10">
-        <div className="rounded-3xl border border-primary/20 bg-gradient-to-r from-[color:var(--primary)]/10 to-[color:var(--accent)]/10 p-6 md:p-8 text-center">
-          <div className="mx-auto mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg border border-primary/40 bg-primary/10 text-primary">
-            <Shield className="h-5 w-5" />
+      <section className="relative overflow-hidden border-b border-line">
+        <div className="pointer-events-none absolute inset-0 grid-faint opacity-70" aria-hidden />
+        <Container className="relative py-16 md:py-24">
+          <div className="max-w-3xl">
+            <h1 className="text-4xl font-semibold leading-[1.05] tracking-tight text-fg sm:text-5xl md:text-6xl">
+              A boutique offensive security practice, led by practitioners.
+            </h1>
+            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-fg-muted">
+              ThreatVet is small on purpose. We take the work we can do well, we do it
+              ourselves, and we stand behind it with research you can verify. We say
+              what we are, a boutique team of senior testers, and we do not dress it
+              up as something larger.
+            </p>
           </div>
-          <h2 className="text-2xl md:text-3xl font-bold">Our Mission</h2>
-          <p className="mx-auto mt-3 max-w-4xl text-gray-300">
-            ThreatVet exists to eliminate the complexity of cybersecurity for modern enterprises. We combine
-            offensive, defensive, and strategic security into a single, AI-driven platform that delivers
-            measurable protection and business-aligned ROI.
-          </p>
-        </div>
+        </Container>
       </section>
 
-      {/* VALUES + METRICS */}
-      <section className="mx-auto max-w-7xl px-6 pb-8">
-        <h3 className="text-3xl font-bold text-center">Our Core Values</h3>
-        <p className="mt-2 text-center text-gray-300">Principles that guide everything we do</p>
-
-        <div className="mt-8 grid gap-6 md:grid-cols-3">
-          {values.map((v) => (
-            <div key={v.title} className="rounded-3xl border border-primary/20 bg-[color:var(--secondary)] p-6">
-              <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg border border-primary/40 bg-primary/10 text-primary">
-                {v.icon}
+      <section className="border-b border-line">
+        <Container className="py-16 md:py-20">
+          <h2 className="text-2xl font-semibold tracking-tight text-fg sm:text-3xl">How we work</h2>
+          <div className="mt-10 grid gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-2">
+            {principles.map((p) => (
+              <div key={p.title} className="bg-surface p-6">
+                <h3 className="font-medium text-fg">{p.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-fg-muted">{p.body}</p>
               </div>
-              <div className="text-lg font-semibold">{v.title}</div>
-              <p className="mt-1 text-sm text-gray-300">{v.text}</p>
-            </div>
-          ))}
-        </div>
-
-        <div className="mx-auto mt-8 grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {metrics.map((m) => (
-            <div key={m.label} className="rounded-2xl border border-primary/20 bg-[color:var(--secondary)]/60 p-4 text-center">
-              <div className="text-2xl font-bold text-[color:var(--accent)]">{m.value}</div>
-              <div className="mt-1 text-xs uppercase tracking-wide text-gray-300">{m.label}</div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </Container>
       </section>
 
-      {/* EXPERTISE */}
-      <section className="mx-auto max-w-7xl px-6 pb-8">
-        <h3 className="text-3xl font-bold text-center">Our Expertise</h3>
-        <p className="mt-2 text-center text-gray-300">Industry-leading security capabilities</p>
-
-        <div className="mt-8 grid gap-6 md:grid-cols-2">
-          {capabilities.map((c) => (
-            <div key={c.title} className="rounded-3xl border border-primary/20 bg-[color:var(--secondary)] p-6">
-              <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg border border-primary/40 bg-primary/10 text-primary">
-                {c.icon}
+      <section className="border-b border-line">
+        <Container className="py-16 md:py-20">
+          <div className="grid gap-12 md:grid-cols-[1fr_0.8fr]">
+            <div className="max-w-2xl">
+              <h2 className="text-2xl font-semibold tracking-tight text-fg sm:text-3xl">Background</h2>
+              <p className="mt-5 text-base leading-relaxed text-fg-muted">
+                The practice is built on a decade of offensive security, on top of
+                years spent writing production software and years inside government
+                cybersecurity. That mix is the point: we read the codebase, not just
+                the responses, and we understand the organisations that have to live
+                with the fixes.
+              </p>
+              <dl className="mt-8 grid gap-6 sm:grid-cols-3">
+                {experience.map((e) => (
+                  <div key={e.k}>
+                    <dt className="text-2xl font-semibold text-fg">{e.k}</dt>
+                    <dd className="mt-1 text-sm text-fg-muted">{e.v}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+            <div className="space-y-8">
+              <div>
+                <h3 className="text-sm font-semibold text-fg-subtle">Certifications</h3>
+                <ul className="mt-3 space-y-2 text-sm text-fg-muted">
+                  <li className="text-fg">OSCP+ <span className="text-fg-subtle">(certified 14 Sep 2026)</span></li>
+                  <li className="text-fg">CPENT</li>
+                </ul>
               </div>
-              <div className="text-lg font-semibold">{c.title}</div>
-              <p className="mt-1 text-sm text-gray-300">{c.text}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* OFFICES / LOCATIONS */}
-      <section className="mx-auto max-w-7xl px-6 pb-10">
-        <h3 className="text-3xl font-bold text-center">Our Offices</h3>
-        <p className="mt-2 text-center text-gray-300">Global presence with a strong base in India</p>
-
-        <div className="mt-8 grid gap-6 md:grid-cols-3">
-          {offices.map((o) => (
-            <div key={o.city} className="rounded-3xl border border-primary/20 bg-[color:var(--secondary)] p-6">
-              <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg border border-primary/40 bg-primary/10 text-primary">
-                <MapPin className="h-5 w-5" />
+              <div>
+                <h3 className="text-sm font-semibold text-fg-subtle">Recognition</h3>
+                <ul className="mt-3 space-y-1 text-sm text-fg-muted">
+                  <li>
+                    GFF 2026 nominee{" "}
+                    <span className="font-mono text-xs text-fg-subtle">{"{{NEEDS_INPUT: GFF 2026 status}}"}</span>
+                  </li>
+                </ul>
               </div>
-              <div className="text-lg font-semibold">{o.city}, {o.country}</div>
-              <div className="text-xs text-primary font-medium mt-0.5">{o.role}</div>
-              <p className="mt-2 text-sm text-gray-300">{o.blurb}</p>
+              <div>
+                <h3 className="text-sm font-semibold text-fg-subtle">Verifiable work</h3>
+                <p className="mt-3 text-sm text-fg-muted">
+                  Four credited CVEs.{" "}
+                  <Link href="/research" className="text-red-bright underline-offset-4 hover:underline">See the research</Link>.
+                </p>
+              </div>
             </div>
-          ))}
-        </div>
+          </div>
+        </Container>
       </section>
 
-      {/* COMMITMENT */}
-      <section className="mx-auto max-w-7xl px-6 pb-20">
-        <div className="rounded-3xl border border-primary/20 bg-gradient-to-r from-[color:var(--primary)]/10 to-[color:var(--accent)]/10 p-6 md:p-8 text-center">
-          <h3 className="text-2xl md:text-3xl font-bold">Our Commitment to You</h3>
-          <p className="mx-auto mt-3 max-w-4xl text-gray-300">
-            Cybersecurity is a trust relationship. We commit to transparency, continuous improvement, and unwavering support
-            for your organization’s security journey. Your digital assets are our top priority—we treat them with the same care as our own.
-          </p>
-        </div>
+      <section className="border-b border-line">
+        <Container className="py-16 md:py-20">
+          <h2 className="text-2xl font-semibold tracking-tight text-fg sm:text-3xl">Where we are</h2>
+          <ul className="mt-8 grid gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-3">
+            {site.locations.map((l) => (
+              <li key={l.city} className="bg-surface p-6">
+                <div className="text-fg">{l.city}</div>
+                {l.note ? <div className="mt-1 text-sm text-fg-subtle">{l.note}</div> : null}
+              </li>
+            ))}
+          </ul>
+        </Container>
       </section>
-    </main>
+
+      <section>
+        <Container className="py-16 md:py-24">
+          <div className="rounded-lg border border-line bg-surface p-8 md:p-12">
+            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+              <div className="max-w-xl">
+                <h2 className="text-2xl font-semibold tracking-tight text-fg sm:text-3xl">Work with us</h2>
+                <p className="mt-3 text-base text-fg-muted">
+                  Enterprise consulting, fixed-scope packages, or training. Tell us
+                  what you need.
+                </p>
+              </div>
+              <div className="shrink-0">
+                <Button asChild size="lg"><Link href="/contact">Get in touch</Link></Button>
+              </div>
+            </div>
+          </div>
+        </Container>
+      </section>
+    </>
   );
 }
