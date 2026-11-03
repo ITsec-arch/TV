@@ -3,9 +3,11 @@ import type { Metadata } from "next";
 import { Container } from "@/components/site/Container";
 import { JsonLd } from "@/components/site/JsonLd";
 import { ProgramCard } from "@/components/site/ProgramCard";
+import { LearningPath } from "@/components/site/LearningPath";
 import { Button } from "@/components/ui/button";
 import { pageMetadata, professionalServiceLd } from "@/lib/seo";
-import { programs, COHORT_DATE_MARKER, BOOKING_MARKER } from "@/lib/courses";
+import { TIERS, programsByTier } from "@/lib/courses";
+import { resolveBookingHref } from "@/lib/pending";
 
 const PATH = "/academy";
 
@@ -22,9 +24,12 @@ const howItWorks = [
   { title: "Mentor-led", body: "Our practitioners, the people who run the engagements, teach the classes and review your work." },
   { title: "Projects and assessment", body: "You are assessed on real work, with direct feedback on what you produced, not a multiple-choice quiz." },
   { title: "English and Tamil", body: "Delivered in English and Tamil, structured for defined skill levels from foundational to advanced." },
+  { title: "A path, not a one-off", body: "Programs stack from foundational to advanced, so you can keep building a career over time." },
 ];
 
 export default function AcademyPage() {
+  const tiers = TIERS.map((tier) => ({ tier, items: programsByTier(tier) }));
+
   return (
     <>
       <JsonLd data={professionalServiceLd()} />
@@ -33,25 +38,30 @@ export default function AcademyPage() {
       <section className="relative overflow-hidden border-b border-line">
         <div className="pointer-events-none absolute inset-0 grid-faint opacity-70" aria-hidden />
         <Container className="relative py-16 md:py-24">
-          <div className="max-w-3xl">
-            <p className="text-sm font-semibold text-red">ThreatVet Academy</p>
-            <h1 className="mt-3 text-4xl font-semibold leading-[1.05] tracking-tight text-fg sm:text-5xl md:text-6xl">
-              Learn offensive security the way the work is actually done.
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-fg-muted">
-              A live, cohort-based academy. You train in scheduled sessions with
-              mentors who run real engagements, on hands-on labs from the first
-              class, in English and Tamil. This is academic coaching plus real-time
-              practical work, not pre-recorded video and not freelance tutoring.
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
-              <Button asChild size="lg"><Link href="/contact?topic=academy">Talk to an advisor</Link></Button>
-              <Link href="#programs" className="text-sm font-medium text-fg hover:text-red-bright">See the programs</Link>
+          <div className="grid items-start gap-12 lg:grid-cols-[1.05fr_0.95fr]">
+            <div>
+              <p className="text-sm font-semibold text-red">ThreatVet Academy</p>
+              <h1 className="mt-3 text-4xl font-semibold leading-[1.05] tracking-tight text-fg sm:text-5xl md:text-6xl">
+                Learn offensive security the way the work is actually done.
+              </h1>
+              <p className="mt-6 max-w-xl text-lg leading-relaxed text-fg-muted">
+                A live, cohort-based academy. You train in scheduled sessions with
+                mentors who run real engagements, on hands-on labs from the first
+                class, in English and Tamil. This is academic coaching plus
+                real-time practical work, not pre-recorded video and not freelance
+                tutoring.
+              </p>
+              <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
+                <Button asChild size="lg"><Link href={resolveBookingHref()}>Talk to an advisor</Link></Button>
+                <Link href="#programs" className="text-sm font-medium text-fg hover:text-red-bright">See the programs</Link>
+              </div>
+              <p className="mt-4 text-xs text-fg-subtle">
+                A short advisory call to help you choose the right program for your
+                level and goal.
+              </p>
             </div>
-            <p className="mt-4 text-xs text-fg-subtle">
-              Advisory call to help you pick the right program. Booking link:{" "}
-              <span className="font-mono">{BOOKING_MARKER}</span>
-            </p>
+
+            <LearningPath />
           </div>
         </Container>
       </section>
@@ -61,7 +71,7 @@ export default function AcademyPage() {
         <Container className="py-16 md:py-20">
           <h2 className="text-2xl font-semibold tracking-tight text-fg sm:text-3xl">How the training works</h2>
           <p className="mt-4 max-w-2xl text-base text-fg-muted">
-            Five things that make this an academy, not a playlist.
+            Six things that make this an academy, not a playlist.
           </p>
           <div className="mt-10 grid gap-px overflow-hidden rounded-lg border border-line bg-line md:grid-cols-2 lg:grid-cols-3">
             {howItWorks.map((h) => (
@@ -74,19 +84,42 @@ export default function AcademyPage() {
         </Container>
       </section>
 
-      {/* PROGRAMS */}
+      {/* PROGRAMS, tiered as a curriculum spine */}
       <section id="programs" className="scroll-mt-20 border-b border-line">
         <Container className="py-16 md:py-20">
           <h2 className="text-2xl font-semibold tracking-tight text-fg sm:text-3xl">Programs</h2>
           <p className="mt-4 max-w-2xl text-base text-fg-muted">
-            Structured programs priced per program. Each runs as a live cohort with
-            hands-on labs. Upcoming cohort dates:{" "}
-            <span className="font-mono text-sm text-fg-subtle">{COHORT_DATE_MARKER}</span>
+            Structured programs priced per program, grouped by level so you can see
+            the path. Each runs as a live cohort with hands-on labs. Cohorts form
+            ahead of each intake, so join a waitlist and we will tell you when dates
+            open.
           </p>
-          <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {programs.map((p) => (
-              <ProgramCard key={p.slug} program={p} />
-            ))}
+
+          <div className="mt-12 space-y-12">
+            {tiers.map((row, ti) => {
+              const last = ti === tiers.length - 1;
+              return (
+                <div key={row.tier} className="relative sm:pl-10">
+                  {/* curriculum spine (sm and up) */}
+                  <div className="absolute left-0 top-1.5 hidden size-3.5 rounded-full border-2 border-red bg-bg sm:block" aria-hidden />
+                  {!last ? (
+                    <div className="absolute left-[6.5px] top-6 bottom-[-3rem] hidden w-px bg-line sm:block" aria-hidden />
+                  ) : null}
+
+                  <div className="flex items-baseline gap-3">
+                    <h3 className="text-lg font-semibold tracking-tight text-fg">{row.tier}</h3>
+                    <span className="text-xs text-fg-subtle">
+                      {row.items.length} {row.items.length === 1 ? "program" : "programs"}
+                    </span>
+                  </div>
+                  <div className="mt-5 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    {row.items.map((p) => (
+                      <ProgramCard key={p.slug} program={p} />
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </Container>
       </section>
@@ -128,7 +161,7 @@ export default function AcademyPage() {
                 </p>
               </div>
               <div className="shrink-0">
-                <Button asChild size="lg"><Link href="/contact?topic=academy">Talk to an advisor</Link></Button>
+                <Button asChild size="lg"><Link href={resolveBookingHref()}>Talk to an advisor</Link></Button>
               </div>
             </div>
           </div>
