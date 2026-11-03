@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 
 /**
- * Text wordmark. The red square is the brand's single "signal" mark — the same
+ * Text wordmark. The red square is the brand's single "signal" mark, the same
  * red used to annotate findings. Replaces the old gradient logo image.
  */
 export function Wordmark({ className }: { className?: string }) {

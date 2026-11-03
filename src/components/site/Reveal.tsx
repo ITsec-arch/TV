@@ -5,7 +5,7 @@ import { motion, useReducedMotion, type Variants } from "framer-motion";
 /**
  * The page's single orchestrated motion moment: the hero finding record
  * assembles once on load. Respects prefers-reduced-motion (no transform,
- * instant). Not reused elsewhere — everything else on the page is static.
+ * instant). Not reused elsewhere; everything else on the page is static.
  */
 export function Reveal({ children, className }: { children: React.ReactNode; className?: string }) {
   const reduce = useReducedMotion();

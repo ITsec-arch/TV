@@ -20,13 +20,13 @@ const plexMono = IBM_Plex_Mono({
 });
 
 const description =
-  "Practitioner-led offensive security and threat intelligence: penetration testing, AI/LLM red teaming, threat hunting and biometric testing — backed by published CVE research and Vyra, our autonomous testing engine.";
+  "Practitioner-led offensive security and threat intelligence: penetration testing, AI/LLM red teaming, threat hunting and biometric testing, backed by published CVE research and Vyra, our autonomous testing engine.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: "ThreatVet — Offensive security & threat intelligence",
-    template: "%s — ThreatVet",
+    default: "ThreatVet: offensive security and threat intelligence",
+    template: "%s | ThreatVet",
   },
   description,
   alternates: { canonical: "/" },
@@ -34,12 +34,12 @@ export const metadata: Metadata = {
     type: "website",
     siteName: site.name,
     url: "/",
-    title: "ThreatVet — Offensive security & threat intelligence",
+    title: "ThreatVet: offensive security and threat intelligence",
     description,
   },
   twitter: {
     card: "summary_large_image",
-    title: "ThreatVet — Offensive security & threat intelligence",
+    title: "ThreatVet: offensive security and threat intelligence",
     description,
   },
   manifest: "/site.webmanifest",

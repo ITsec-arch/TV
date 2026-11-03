@@ -7,7 +7,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ============================================================
-   ThreatVet v2 tokens — warm-tinted near-black, one signal red.
+   ThreatVet v2 tokens: warm-tinted near-black, one signal red.
    Red is the colour of findings and annotation, never a glow.
    ============================================================ */
 :root {
