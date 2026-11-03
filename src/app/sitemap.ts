@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { site } from "@/lib/site";
-import { courses } from "@/lib/courses";
+import { programs } from "@/lib/courses";
 
 type Entry = {
   path: string;
@@ -31,7 +31,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: r.changeFrequency,
     priority: r.priority,
   }));
-  const courseEntries = courses.map((c) => ({
+  const courseEntries = programs.map((c) => ({
     url: `${site.url}/academy/${c.slug}`,
     lastModified: now,
     changeFrequency: "monthly" as const,

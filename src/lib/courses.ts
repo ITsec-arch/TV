@@ -1,134 +1,164 @@
-// Academy catalogue. Data-driven so adding a course needs no layout work.
-// The catalogue is provisional pending confirmation (see {{NEEDS_INPUT}} below).
-// Individual prices are markers; corporate cohorts are quote-only.
+// Academy programs. Structured, cohort-based, mentor-led. Data-driven so a new
+// program needs no layout work. Team-generic throughout: our mentors and
+// practitioners teach; no personal names, no hourly rates, no fabricated
+// counts, ratings or testimonials. Fees and cohort dates are honest markers.
 
 export type Module = { title: string; points: string[] };
 
-export type Course = {
+export type Program = {
   slug: string;
   title: string;
-  summary: string;
-  audience: string;
-  prerequisites: string[];
+  promise: string; // outcome-led, one line
+  whoFor: string;
+  level: string;
   outcomes: string[];
+  prerequisites: string[];
   modules: Module[];
-  duration: string;
+  durationWeeks: string;
+  liveHours: string;
+  labHours: string;
   format: string;
-  priceMarker: string; // individual seat price
+  language: string;
+  feeMarker: string;
+  certs?: string[];
 };
 
-export const CATALOGUE_STATUS = "{{NEEDS_INPUT: confirm academy catalogue and course details}}";
+// Surfaced markers (no fake dates, no personal booking links).
+export const COHORT_DATE_MARKER = "{{NEEDS_INPUT: cohort date}}";
+export const BOOKING_MARKER = "{{NEEDS_INPUT: booking link}}";
 
-export const courses: Course[] = [
+const COMMON = {
+  format: "Live online, hands-on",
+  language: "English and Tamil",
+};
+
+export const programs: Program[] = [
   {
-    slug: "offensive-security-for-developers",
-    title: "Offensive security for developers",
-    summary:
-      "How attackers actually break the code you write, taught by testers who read codebases. Developers leave able to spot and kill whole vulnerability classes before review.",
-    audience: "Software and platform engineers, tech leads",
-    prerequisites: ["Comfortable reading and writing code in at least one language"],
+    slug: "offensive-security-practitioner",
+    title: "Offensive Security Practitioner",
+    promise:
+      "Run a web, network and mobile assessment end to end, by hand and with tooling, and write a report that stands up.",
+    whoFor: "Testers and engineers moving into hands-on offensive security.",
+    level: "Intermediate",
     outcomes: [
-      "Recognise the vulnerability classes that map to your own stack",
-      "Trace untrusted input to a sink and reason about impact",
-      "Write code and tests that close a class, not just one bug",
+      "Enumerate and exploit web, network and mobile targets",
+      "Chain findings into real impact, safely",
+      "Produce a reproducible, client-ready report",
     ],
+    prerequisites: ["Comfortable with HTTP, Linux and basic networking"],
     modules: [
-      { title: "Attacker mental model", points: ["Trust boundaries", "Input to sink", "Impact over severity labels"] },
-      { title: "Web and API classes", points: ["Injection", "Access control", "SSRF and request forgery"] },
-      { title: "Secrets, dependencies, supply chain", points: ["Secret handling", "Dependency risk", "Build integrity"] },
-      { title: "Fix and verify", points: ["Remediation patterns", "Regression tests", "Review checklists"] },
+      { title: "Recon and mapping", points: ["Surface discovery", "Auth flows", "Tooling"] },
+      { title: "Web exploitation", points: ["OWASP WSTG", "Access control", "Injection"] },
+      { title: "Network and services", points: ["Service attacks", "Pivoting", "Privilege escalation"] },
+      { title: "Mobile basics", points: ["Android and iOS", "MASTG checks", "API testing"] },
+      { title: "Reporting and retest", points: ["Evidence", "Severity", "Remediation"] },
     ],
-    duration: "2 days",
-    format: "Live, online or on-site",
-    priceMarker: "{{NEEDS_INPUT: course price}}",
-  },
-  {
-    slug: "secure-code-review",
-    title: "Secure code review",
-    summary:
-      "A repeatable method for reviewing code for security, not style. Review faster, find the issues that matter, and document findings a developer can act on.",
-    audience: "Engineers, application security reviewers",
-    prerequisites: ["Working knowledge of one server-side language"],
-    outcomes: [
-      "Apply a consistent review method under time pressure",
-      "Prioritise by impact and exploitability",
-      "Write findings with clear reproduction and fixes",
-    ],
-    modules: [
-      { title: "Review strategy", points: ["Where to look first", "Data-flow reading", "Threat-led triage"] },
-      { title: "Language and framework pitfalls", points: ["Type confusion", "Unsafe defaults", "Deserialisation"] },
-      { title: "Reporting", points: ["Severity and impact", "Reproduction", "Remediation guidance"] },
-    ],
-    duration: "2 days",
-    format: "Live, online or on-site",
-    priceMarker: "{{NEEDS_INPUT: course price}}",
+    durationWeeks: "10 weeks",
+    liveHours: "30 hours live",
+    labHours: "50 hours lab",
+    feeMarker: "{{NEEDS_INPUT: program fee}}",
+    ...COMMON,
   },
   {
     slug: "ai-llm-red-teaming",
-    title: "AI and LLM red teaming",
-    summary:
-      "Hands-on red teaming of LLM features, RAG systems and agents, mapped to the OWASP LLM Top 10 and MITRE ATLAS. Run the attacks and learn to defend against them.",
-    audience: "Security engineers, ML and platform teams shipping AI features",
-    prerequisites: ["Familiarity with how LLM applications are built"],
+    title: "AI and LLM Red Teaming",
+    promise:
+      "Run prompt injection, agent abuse and data exfiltration against live targets, and map every finding to recognised AI security standards.",
+    whoFor: "Security engineers and ML or platform teams working on AI features.",
+    level: "Intermediate to advanced",
     outcomes: [
-      "Run direct and indirect prompt injection against a real target",
-      "Test tool-use and agent abuse, and data exfiltration paths",
-      "Map findings to recognised AI security standards",
+      "Run direct and indirect prompt injection on a real target",
+      "Test tool-use and agent abuse, and exfiltration paths",
+      "Map findings to the OWASP LLM Top 10 and MITRE ATLAS",
     ],
+    prerequisites: ["Familiar with how LLM applications are built"],
     modules: [
       { title: "AI attack surface", points: ["Prompts and context", "Retrieval", "Tools and agency"] },
       { title: "Injection and exfiltration", points: ["Direct injection", "Indirect injection", "Output handling"] },
       { title: "Agents and tools", points: ["Excessive agency", "Tool abuse", "Containment"] },
       { title: "Defend and measure", points: ["Guardrails", "Evaluation", "Standard mappings"] },
     ],
-    duration: "2 days",
-    format: "Live, online or on-site",
-    priceMarker: "{{NEEDS_INPUT: course price}}",
+    durationWeeks: "6 weeks",
+    liveHours: "18 hours live",
+    labHours: "30 hours lab",
+    feeMarker: "{{NEEDS_INPUT: program fee}}",
+    ...COMMON,
+  },
+  {
+    slug: "secure-code-review",
+    title: "Secure Code Review",
+    promise:
+      "Adopt a repeatable method for reviewing real codebases for security, and document findings a developer can act on.",
+    whoFor: "Engineers and application security reviewers.",
+    level: "Intermediate",
+    outcomes: [
+      "Apply a consistent review method under time pressure",
+      "Prioritise by impact and exploitability",
+      "Write findings with clear reproduction and fixes",
+    ],
+    prerequisites: ["Working knowledge of one server-side language"],
+    modules: [
+      { title: "Review strategy", points: ["Where to look first", "Data-flow reading", "Threat-led triage"] },
+      { title: "Framework pitfalls", points: ["Type confusion", "Unsafe defaults", "Deserialisation"] },
+      { title: "Reporting", points: ["Severity and impact", "Reproduction", "Remediation"] },
+    ],
+    durationWeeks: "6 weeks",
+    liveHours: "18 hours live",
+    labHours: "24 hours lab",
+    feeMarker: "{{NEEDS_INPUT: program fee}}",
+    ...COMMON,
   },
   {
     slug: "web-app-pentesting-fundamentals",
-    title: "Web app pentesting fundamentals",
-    summary:
-      "A grounding in web application testing to OWASP WSTG: how to enumerate, find and prove the common vulnerability classes, with a report that stands up.",
-    audience: "New testers, developers moving into security",
-    prerequisites: ["Basic HTTP and web fundamentals"],
+    title: "Web App Pentesting Fundamentals",
+    promise:
+      "Build a solid foundation in web application testing to OWASP WSTG, from enumeration to a clean report.",
+    whoFor: "New testers and developers moving into security.",
+    level: "Foundational",
     outcomes: [
       "Enumerate an application's real attack surface",
       "Find and prove the common OWASP classes",
       "Produce a clear, reproducible report",
     ],
+    prerequisites: ["Basic HTTP and web fundamentals"],
     modules: [
       { title: "Recon and mapping", points: ["Surface discovery", "Auth flows", "Tooling"] },
       { title: "Core classes", points: ["Injection", "Access control", "Client-side"] },
       { title: "Proof and reporting", points: ["Reproduction", "Impact", "Write-up"] },
     ],
-    duration: "3 days",
-    format: "Live, online or on-site",
-    priceMarker: "{{NEEDS_INPUT: course price}}",
+    durationWeeks: "8 weeks",
+    liveHours: "24 hours live",
+    labHours: "36 hours lab",
+    feeMarker: "{{NEEDS_INPUT: program fee}}",
+    ...COMMON,
   },
   {
     slug: "certification-prep",
-    title: "Certification prep",
-    summary:
-      "Structured preparation for hands-on offensive security certifications: lab strategy, methodology, time management and reporting, run by certified practitioners.",
-    audience: "Candidates preparing for practical security certifications",
-    prerequisites: ["Fundamentals of networking and web security"],
+    title: "Certification Prep",
+    promise:
+      "A structured track to prepare for hands-on certifications: lab strategy, methodology, time management and reporting.",
+    whoFor: "Candidates preparing for practical security certifications.",
+    level: "Intermediate",
+    certs: ["OSCP", "OSEP", "OSWP", "CRTP", "CEH", "CySA+", "Pentest+", "Splunk", "CompTIA"],
     outcomes: [
       "Work a lab methodically under exam conditions",
       "Manage time and note-taking across a long assessment",
       "Write a report that meets exam standards",
     ],
+    prerequisites: ["Fundamentals of networking and web security"],
     modules: [
       { title: "Methodology", points: ["Enumeration discipline", "Pivoting", "Privilege escalation"] },
       { title: "Exam craft", points: ["Time management", "Note-taking", "Avoiding rabbit holes"] },
       { title: "Reporting", points: ["Evidence", "Structure", "Review"] },
     ],
-    duration: "{{NEEDS_INPUT: duration}}",
-    format: "Live, online or on-site",
-    priceMarker: "{{NEEDS_INPUT: course price}}",
+    durationWeeks: "Rolling track",
+    liveHours: "Scheduled by track",
+    labHours: "Guided lab time",
+    feeMarker: "{{NEEDS_INPUT: cert-prep fee}}",
+    ...COMMON,
   },
 ];
 
-export function getCourse(slug: string): Course | undefined {
-  return courses.find((c) => c.slug === slug);
+export function getProgram(slug: string): Program | undefined {
+  return programs.find((p) => p.slug === slug);
 }
