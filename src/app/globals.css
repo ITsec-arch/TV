@@ -2,50 +2,149 @@
 @import "tailwindcss";
 @plugin "tailwindcss-animate";
 
-/* Map Tailwind tokens -> CSS vars (v4 inline theme) */
-@custom-variant dark (&:is(.dark *));
+/* Class-based dark strategy (zero-specificity :where, per Tailwind v4 docs).
+   The site is dark-first; tokens live on :root so they apply regardless. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ============================================================
+   ThreatVet v2 tokens — warm-tinted near-black, one signal red.
+   Red is the colour of findings and annotation, never a glow.
+   ============================================================ */
+:root {
+  --radius: 0.5rem;
+
+  /* raw surfaces (warm near-black ramp) */
+  --bg: #0b0a09;         /* ink */
+  --surface: #141110;    /* raised panel */
+  --surface-2: #1b1716;  /* higher panel */
+  --line: #2a2422;       /* hairline */
+  --line-strong: #3a322f;
+
+  /* text (warm bone → ash) */
+  --fg: #f4f1ef;
+  --fg-muted: #b4aca7;
+  --fg-subtle: #867d78;
+
+  /* signal red (single accent) */
+  --red: #ef4444;
+  --red-bright: #ff6b63;
+  --red-dim: #4a1a18;    /* severity bars / deep annotation */
+
+  /* shadcn semantic aliases → surfaces above */
+  --background: var(--bg);
+  --foreground: var(--fg);
+  --card: var(--surface);
+  --card-foreground: var(--fg);
+  --popover: var(--surface-2);
+  --popover-foreground: var(--fg);
+  --primary: var(--red);
+  --primary-foreground: #160a09;   /* near-black text on red (≈5.2:1) */
+  --secondary: var(--surface);
+  --secondary-foreground: var(--fg);
+  --muted: var(--surface);
+  --muted-foreground: var(--fg-muted);
+  --accent: var(--surface-2);      /* neutral interaction surface (no orange) */
+  --accent-foreground: var(--fg);
+  --destructive: var(--red);
+  --destructive-foreground: #160a09;
+  --border: var(--line);
+  --input: var(--line);
+  --ring: var(--red);
+}
+
+/* Map tokens → Tailwind utilities (inline: they reference runtime vars) */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* extra brand tokens */
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-red: var(--red);
+  --color-red-bright: var(--red-bright);
+  --color-red-dim: var(--red-dim);
+
+  --font-sans: var(--font-plex-sans);
+  --font-mono: var(--font-plex-mono);
+
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 4px);
 }
 
-/* === ThreatVet Brand (Black/White/Red) === */
-:root, .dark {
-  --background: #0b0b0b;  /* near black */
-  --foreground: #ffffff;
-  --primary:   #ef4444;   /* red */
-  --accent:    #f97316;   /* warm orange tail for gradients */
-  --secondary: #111827;   /* panel */
-  --border:    #1f2937;
-  --input:     #0f172a;
-  --ring:      var(--primary);
-  --radius:    0.75rem;
+@layer base {
+  * {
+    border-color: var(--line);
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv05" 1, "ss01" 1;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  /* Tight, confident headline scale carries the page */
+  h1, h2, h3 {
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+  ::selection {
+    background: color-mix(in oklab, var(--red) 32%, transparent);
+    color: var(--fg);
+  }
+  :focus-visible {
+    outline: 2px solid var(--red);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
 }
 
-/* Soft background auras */
-.soft-grid {
-  position: relative;
-  background:
-    radial-gradient(1000px 420px at 50% -80px, color-mix(in oklab, var(--primary) 22%, transparent), transparent 55%),
-    radial-gradient(800px 320px at 100% 0%, color-mix(in oklab, var(--accent) 14%, transparent), transparent 60%),
-    var(--background);
+/* ----- small, purposeful utilities (not decoration) ----- */
+
+/* faint engineered blueprint grid for the hero backdrop only */
+.grid-faint {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--line) 55%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--line) 55%, transparent) 1px, transparent 1px);
+  background-size: 48px 48px;
+  -webkit-mask-image: radial-gradient(120% 90% at 20% 0%, #000 35%, transparent 78%);
+  mask-image: radial-gradient(120% 90% at 20% 0%, #000 35%, transparent 78%);
 }
 
-/* Hero glow */
-.glow {
-  text-shadow:
-    0 0 24px color-mix(in oklab, var(--primary) 55%, transparent),
-    0 0 40px color-mix(in oklab, var(--accent) 45%, transparent);
-}
+/* red annotation tick used to mark the one key line (functional, not glow) */
+.rule-red { background: var(--red); }
 
+/* severity dot */
+.dot { height: 0.5rem; width: 0.5rem; border-radius: 9999px; display: inline-block; }

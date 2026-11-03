@@ -1,12 +1,9 @@
 import type { Viewport } from "next";
 
+// Dark-first brand; browser UI matches the warm near-black ink.
 export const viewport: Viewport = {
-  // Light/dark brand theme colors for the browser UI
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#0B0B0C" },
-  ],
+  themeColor: "#0b0a09",
+  colorScheme: "dark",
 };
 
 export default viewport;
-
