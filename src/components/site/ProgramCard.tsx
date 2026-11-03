@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import type { Program } from "@/lib/courses";
+import { resolveFee } from "@/lib/pending";
 
 /**
  * A program card. Cohort status is honest: every program is "forming" with a
@@ -41,7 +42,7 @@ export function ProgramCard({ program }: { program: Program }) {
         <div className="flex items-center justify-between gap-3">
           <div>
             <div className="text-xs text-fg-subtle">Program fee</div>
-            <div className="font-mono text-sm text-fg">{program.feeMarker}</div>
+            <div className="text-sm text-fg">{resolveFee(program.slug)}</div>
           </div>
           <div className="flex items-center gap-2 text-xs text-fg-muted">
             <span className="size-1.5 rounded-full bg-red/55" aria-hidden />

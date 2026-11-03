@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { resolveFee, FEE_FALLBACK } from "@/lib/pending";
 
 export type Package = {
+  key: string;
   name: string;
   scope: string;
   deliverable: string;
   turnaround: string;
-  priceMarker: string;
 };
 
 export function PackageCard({
@@ -37,8 +38,10 @@ export function PackageCard({
       </dl>
       <div className="mt-auto flex items-end justify-between gap-4 border-t border-line pt-5">
         <div>
-          <div className="text-xs text-fg-subtle">From</div>
-          <div className="font-mono text-sm text-fg">{pkg.priceMarker}</div>
+          {resolveFee(pkg.key) === FEE_FALLBACK ? null : (
+            <div className="text-xs text-fg-subtle">From</div>
+          )}
+          <div className="text-sm text-fg">{resolveFee(pkg.key)}</div>
         </div>
         <Button asChild size="sm" variant="outline">
           <Link href={ctaHref}>{ctaLabel}</Link>

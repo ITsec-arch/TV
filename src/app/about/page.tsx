@@ -5,6 +5,7 @@ import { JsonLd } from "@/components/site/JsonLd";
 import { Button } from "@/components/ui/button";
 import { pageMetadata, organizationLd, professionalServiceLd } from "@/lib/seo";
 import { site } from "@/lib/site";
+import { resolveGff } from "@/lib/pending";
 
 const PATH = "/about";
 
@@ -96,10 +97,7 @@ export default function AboutPage() {
               <div>
                 <h3 className="text-sm font-semibold text-fg-subtle">Recognition</h3>
                 <ul className="mt-3 space-y-1 text-sm text-fg-muted">
-                  <li>
-                    GFF 2026 nominee{" "}
-                    <span className="font-mono text-xs text-fg-subtle">{"{{NEEDS_INPUT: GFF 2026 status}}"}</span>
-                  </li>
+                  <li>GFF 2026 {resolveGff()}</li>
                 </ul>
               </div>
               <div>

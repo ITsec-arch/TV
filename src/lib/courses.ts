@@ -1,13 +1,16 @@
 // Academy programs. Structured, cohort-based, mentor-led. Data-driven so a new
 // program needs no layout work. Team-generic throughout: our mentors and
 // practitioners teach; no personal names, no hourly rates, no fabricated
-// counts, ratings or testimonials. Fees and cohort dates are honest markers.
+// counts, ratings or testimonials. Fees resolve from lib/pending (never a raw
+// token); cohort status is a waitlist until a real date is set.
 
 export type Module = { title: string; points: string[] };
+export type Tier = "Foundational" | "Intermediate" | "Advanced";
 
 export type Program = {
   slug: string;
   title: string;
+  tier: Tier;
   promise: string; // outcome-led, one line
   whoFor: string;
   level: string;
@@ -19,13 +22,10 @@ export type Program = {
   labHours: string;
   format: string;
   language: string;
-  feeMarker: string;
   certs?: string[];
 };
 
-// Surfaced markers (no fake dates, no personal booking links).
-export const COHORT_DATE_MARKER = "{{NEEDS_INPUT: cohort date}}";
-export const BOOKING_MARKER = "{{NEEDS_INPUT: booking link}}";
+export const TIERS: Tier[] = ["Foundational", "Intermediate", "Advanced"];
 
 const COMMON = {
   format: "Live online, hands-on",
@@ -34,8 +34,33 @@ const COMMON = {
 
 export const programs: Program[] = [
   {
+    slug: "web-app-pentesting-fundamentals",
+    title: "Web App Pentesting Fundamentals",
+    tier: "Foundational",
+    promise:
+      "Build a solid foundation in web application testing to OWASP WSTG, from enumeration to a clean report.",
+    whoFor: "New testers and developers moving into security.",
+    level: "Foundational",
+    outcomes: [
+      "Enumerate an application's real attack surface",
+      "Find and prove the common OWASP classes",
+      "Produce a clear, reproducible report",
+    ],
+    prerequisites: ["Basic HTTP and web fundamentals"],
+    modules: [
+      { title: "Recon and mapping", points: ["Surface discovery", "Auth flows", "Tooling"] },
+      { title: "Core classes", points: ["Injection", "Access control", "Client-side"] },
+      { title: "Proof and reporting", points: ["Reproduction", "Impact", "Write-up"] },
+    ],
+    durationWeeks: "8 weeks",
+    liveHours: "24 hours live",
+    labHours: "36 hours lab",
+    ...COMMON,
+  },
+  {
     slug: "offensive-security-practitioner",
     title: "Offensive Security Practitioner",
+    tier: "Intermediate",
     promise:
       "Run a web, network and mobile assessment end to end, by hand and with tooling, and write a report that stands up.",
     whoFor: "Testers and engineers moving into hands-on offensive security.",
@@ -56,37 +81,12 @@ export const programs: Program[] = [
     durationWeeks: "10 weeks",
     liveHours: "30 hours live",
     labHours: "50 hours lab",
-    feeMarker: "{{NEEDS_INPUT: program fee}}",
-    ...COMMON,
-  },
-  {
-    slug: "ai-llm-red-teaming",
-    title: "AI and LLM Red Teaming",
-    promise:
-      "Run prompt injection, agent abuse and data exfiltration against live targets, and map every finding to recognised AI security standards.",
-    whoFor: "Security engineers and ML or platform teams working on AI features.",
-    level: "Intermediate to advanced",
-    outcomes: [
-      "Run direct and indirect prompt injection on a real target",
-      "Test tool-use and agent abuse, and exfiltration paths",
-      "Map findings to the OWASP LLM Top 10 and MITRE ATLAS",
-    ],
-    prerequisites: ["Familiar with how LLM applications are built"],
-    modules: [
-      { title: "AI attack surface", points: ["Prompts and context", "Retrieval", "Tools and agency"] },
-      { title: "Injection and exfiltration", points: ["Direct injection", "Indirect injection", "Output handling"] },
-      { title: "Agents and tools", points: ["Excessive agency", "Tool abuse", "Containment"] },
-      { title: "Defend and measure", points: ["Guardrails", "Evaluation", "Standard mappings"] },
-    ],
-    durationWeeks: "6 weeks",
-    liveHours: "18 hours live",
-    labHours: "30 hours lab",
-    feeMarker: "{{NEEDS_INPUT: program fee}}",
     ...COMMON,
   },
   {
     slug: "secure-code-review",
     title: "Secure Code Review",
+    tier: "Intermediate",
     promise:
       "Adopt a repeatable method for reviewing real codebases for security, and document findings a developer can act on.",
     whoFor: "Engineers and application security reviewers.",
@@ -105,40 +105,16 @@ export const programs: Program[] = [
     durationWeeks: "6 weeks",
     liveHours: "18 hours live",
     labHours: "24 hours lab",
-    feeMarker: "{{NEEDS_INPUT: program fee}}",
-    ...COMMON,
-  },
-  {
-    slug: "web-app-pentesting-fundamentals",
-    title: "Web App Pentesting Fundamentals",
-    promise:
-      "Build a solid foundation in web application testing to OWASP WSTG, from enumeration to a clean report.",
-    whoFor: "New testers and developers moving into security.",
-    level: "Foundational",
-    outcomes: [
-      "Enumerate an application's real attack surface",
-      "Find and prove the common OWASP classes",
-      "Produce a clear, reproducible report",
-    ],
-    prerequisites: ["Basic HTTP and web fundamentals"],
-    modules: [
-      { title: "Recon and mapping", points: ["Surface discovery", "Auth flows", "Tooling"] },
-      { title: "Core classes", points: ["Injection", "Access control", "Client-side"] },
-      { title: "Proof and reporting", points: ["Reproduction", "Impact", "Write-up"] },
-    ],
-    durationWeeks: "8 weeks",
-    liveHours: "24 hours live",
-    labHours: "36 hours lab",
-    feeMarker: "{{NEEDS_INPUT: program fee}}",
     ...COMMON,
   },
   {
     slug: "certification-prep",
     title: "Certification Prep",
+    tier: "Intermediate",
     promise:
       "A structured track to prepare for hands-on certifications: lab strategy, methodology, time management and reporting.",
     whoFor: "Candidates preparing for practical security certifications.",
-    level: "Intermediate",
+    level: "Cross-level track",
     certs: ["OSCP", "OSEP", "OSWP", "CRTP", "CEH", "CySA+", "Pentest+", "Splunk", "CompTIA"],
     outcomes: [
       "Work a lab methodically under exam conditions",
@@ -154,11 +130,39 @@ export const programs: Program[] = [
     durationWeeks: "Rolling track",
     liveHours: "Scheduled by track",
     labHours: "Guided lab time",
-    feeMarker: "{{NEEDS_INPUT: cert-prep fee}}",
+    ...COMMON,
+  },
+  {
+    slug: "ai-llm-red-teaming",
+    title: "AI and LLM Red Teaming",
+    tier: "Advanced",
+    promise:
+      "Run prompt injection, agent abuse and data exfiltration against live targets, and map every finding to recognised AI security standards.",
+    whoFor: "Security engineers and ML or platform teams working on AI features.",
+    level: "Advanced",
+    outcomes: [
+      "Run direct and indirect prompt injection on a real target",
+      "Test tool-use and agent abuse, and exfiltration paths",
+      "Map findings to the OWASP LLM Top 10 and MITRE ATLAS",
+    ],
+    prerequisites: ["Familiar with how LLM applications are built"],
+    modules: [
+      { title: "AI attack surface", points: ["Prompts and context", "Retrieval", "Tools and agency"] },
+      { title: "Injection and exfiltration", points: ["Direct injection", "Indirect injection", "Output handling"] },
+      { title: "Agents and tools", points: ["Excessive agency", "Tool abuse", "Containment"] },
+      { title: "Defend and measure", points: ["Guardrails", "Evaluation", "Standard mappings"] },
+    ],
+    durationWeeks: "6 weeks",
+    liveHours: "18 hours live",
+    labHours: "30 hours lab",
     ...COMMON,
   },
 ];
 
 export function getProgram(slug: string): Program | undefined {
   return programs.find((p) => p.slug === slug);
+}
+
+export function programsByTier(tier: Tier): Program[] {
+  return programs.filter((p) => p.tier === tier);
 }

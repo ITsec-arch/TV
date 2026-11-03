@@ -17,32 +17,32 @@ export const metadata: Metadata = pageMetadata({
 
 const packages: Package[] = [
   {
+    key: "pkg-web-app-pentest",
     name: "Web app pentest",
     scope: "One web application and its API, with up to two roles, tested to OWASP WSTG.",
     deliverable: "Reproducible findings with severity, fixes, and a free retest.",
     turnaround: "Typically one to two weeks",
-    priceMarker: "{{NEEDS_INPUT: SMB package price}}",
   },
   {
+    key: "pkg-cloud-config-review",
     name: "Cloud config review",
     scope: "One cloud account or subscription: identity, network, storage and logging.",
     deliverable: "Prioritised misconfigurations mapped to a hardening checklist.",
     turnaround: "Typically one week",
-    priceMarker: "{{NEEDS_INPUT: SMB package price}}",
   },
   {
+    key: "pkg-external-attack-surface",
     name: "External attack-surface assessment",
     scope: "Everything you expose to the internet: domains, hosts, services and leaks.",
     deliverable: "A ranked map of your external surface and the risks on it.",
     turnaround: "Typically one week",
-    priceMarker: "{{NEEDS_INPUT: SMB package price}}",
   },
   {
+    key: "pkg-ai-llm-review",
     name: "AI / LLM security review",
     scope: "One LLM feature or agent: prompt injection, tool abuse and data exposure.",
     deliverable: "Findings mapped to the OWASP LLM Top 10, with fixes.",
     turnaround: "Typically one to two weeks",
-    priceMarker: "{{NEEDS_INPUT: SMB package price}}",
   },
 ];
 

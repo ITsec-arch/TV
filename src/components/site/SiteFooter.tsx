@@ -2,9 +2,12 @@ import Link from "next/link";
 import { Container } from "@/components/site/Container";
 import { Wordmark } from "@/components/site/Wordmark";
 import { nav, site } from "@/lib/site";
+import { legalEntity, gstin } from "@/lib/pending";
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
+  const entity = legalEntity();
+  const gst = gstin();
 
   return (
     <footer className="mt-24 border-t border-line bg-surface/40">
@@ -69,10 +72,12 @@ export function SiteFooter() {
                 </li>
               ))}
             </ul>
-            <div className="mt-6 space-y-1 text-xs text-fg-subtle">
-              <div>Entity: {site.legalEntity}</div>
-              <div>GSTIN: {site.gstin}</div>
-            </div>
+            {entity || gst ? (
+              <div className="mt-6 space-y-1 text-xs text-fg-subtle">
+                {entity ? <div>Entity: {entity}</div> : null}
+                {gst ? <div>GSTIN: {gst}</div> : null}
+              </div>
+            ) : null}
           </div>
         </div>
 

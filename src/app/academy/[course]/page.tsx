@@ -6,6 +6,7 @@ import { JsonLd } from "@/components/site/JsonLd";
 import { Button } from "@/components/ui/button";
 import { pageMetadata, courseLd, professionalServiceLd } from "@/lib/seo";
 import { programs, getProgram } from "@/lib/courses";
+import { resolveFee } from "@/lib/pending";
 
 type Params = { params: Promise<{ course: string }> };
 
@@ -72,7 +73,7 @@ export default async function ProgramPage({ params }: Params) {
               ))}
               <div>
                 <dt className="text-fg-subtle">Program fee</dt>
-                <dd className="mt-1 font-mono text-fg">{p.feeMarker}</dd>
+                <dd className="mt-1 text-fg">{resolveFee(p.slug)}</dd>
               </div>
             </dl>
 

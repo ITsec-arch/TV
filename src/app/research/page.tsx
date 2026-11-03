@@ -51,8 +51,8 @@ export default function ResearchPage() {
           <h2 className="text-2xl font-semibold tracking-tight text-fg sm:text-3xl">Write-ups and tools</h2>
           {writeups.length === 0 ? (
             <p className="mt-4 max-w-2xl text-base text-fg-muted">
-              Technical write-ups, tool documentation and talks will appear here.
-              <span className="ml-2 font-mono text-sm text-fg-subtle">{"{{NEEDS_INPUT: research write-ups}}"}</span>
+              Technical write-ups, tool documentation and talks are published here as
+              they are released. The CVE record above is the current, verifiable proof.
             </p>
           ) : (
             <ul className="mt-8 divide-y divide-line border-y border-line">

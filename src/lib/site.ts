@@ -13,9 +13,6 @@ export const site = {
     { city: "UAE", note: "" },
     { city: "USA", note: "" },
   ],
-  // NEEDS_INPUT markers surfaced in the footer for invoicing credibility.
-  legalEntity: "{{NEEDS_INPUT: registered legal entity}}",
-  gstin: "{{NEEDS_INPUT: GSTIN}}",
 } as const;
 
 export type NavChild = { label: string; href: string; blurb: string };
