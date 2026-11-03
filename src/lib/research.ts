@@ -76,3 +76,18 @@ export const cves: Cve[] = [
     },
   },
 ];
+
+// Research was conducted and credited through this employer at the time.
+export const creditedThrough = "Cybersecurity Works";
+
+export type Writeup = {
+  slug: string;
+  title: string;
+  kind: "writeup" | "tool" | "talk";
+  summary: string;
+  date?: string;
+  url?: string;
+};
+
+// Typed array so adding an entry needs no layout work. Empty until supplied.
+export const writeups: Writeup[] = [];

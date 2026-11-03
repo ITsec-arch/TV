@@ -67,6 +67,45 @@ export function professionalServiceLd() {
   };
 }
 
+/** SoftwareApplication node (for Vyra). No fabricated rating or price. */
+export function softwareApplicationLd(opts: {
+  name: string;
+  description: string;
+  path: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: opts.name,
+    applicationCategory: "SecurityApplication",
+    operatingSystem: "Web",
+    description: opts.description,
+    url: `${site.url}${opts.path}`,
+    provider: { "@type": "Organization", name: site.name, url: site.url },
+  };
+}
+
+/** Course node. Price omitted until confirmed, so no fabricated figure ships. */
+export function courseLd(opts: {
+  name: string;
+  description: string;
+  path: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    name: opts.name,
+    description: opts.description,
+    url: `${site.url}${opts.path}`,
+    provider: { "@type": "Organization", name: site.name, url: site.url },
+    hasCourseInstance: {
+      "@type": "CourseInstance",
+      courseMode: "online",
+      courseWorkload: "PT16H",
+    },
+  };
+}
+
 /** Service node for a specific offering page. */
 export function serviceLd(opts: {
   name: string;
