@@ -148,3 +148,102 @@
 
 /* severity dot */
 .dot { height: 0.5rem; width: 0.5rem; border-radius: 9999px; display: inline-block; }
+
+/* =========================================================
+   Rich motion and depth. Red and near-black only, GPU-friendly,
+   lightened on mobile, fully static under reduced motion.
+   ========================================================= */
+
+/* low-opacity grain to kill flatness (static, cheap) */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* red depth glow that drifts slowly (transform only) */
+.glow-drift {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--red) 60%, transparent), transparent 72%);
+  opacity: 0.16;
+  animation: glow-drift 26s ease-in-out infinite alternate;
+  will-change: transform;
+}
+.glow-drift-2 { animation-duration: 34s; animation-direction: alternate-reverse; opacity: 0.1; }
+@keyframes glow-drift {
+  from { transform: translate3d(-5%, -3%, 0) scale(1); }
+  to   { transform: translate3d(7%, 5%, 0) scale(1.18); }
+}
+
+/* a single telemetry scan line */
+.scan-line {
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--red) 70%, transparent), transparent);
+  opacity: 0;
+  animation: scan 9s linear infinite;
+  will-change: transform, opacity;
+}
+@keyframes scan {
+  0% { transform: translateY(2rem); opacity: 0; }
+  12% { opacity: 0.55; }
+  88% { opacity: 0.55; }
+  100% { transform: translateY(26rem); opacity: 0; }
+}
+
+/* card hover: lift + border brighten + soft red glow */
+.card-rich {
+  transition: transform .25s cubic-bezier(.2,0,0,1), border-color .25s, box-shadow .25s, background-color .25s;
+}
+@media (hover: hover) {
+  .card-rich:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in oklab, var(--red) 45%, var(--line));
+    box-shadow: 0 14px 34px -14px color-mix(in oklab, var(--red) 35%, transparent);
+    background-color: color-mix(in oklab, var(--surface-2) 65%, var(--surface));
+  }
+}
+
+/* primary CTA sheen + glow */
+.cta-rich { position: relative; overflow: hidden; isolation: isolate; }
+.cta-rich::after {
+  content: "";
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(120deg, transparent 25%, color-mix(in oklab, #ffffff 22%, transparent) 50%, transparent 75%);
+  transform: translateX(-130%);
+  transition: transform .6s ease;
+  pointer-events: none;
+}
+@media (hover: hover) {
+  .cta-rich:hover::after { transform: translateX(130%); }
+  .cta-rich:hover { box-shadow: 0 10px 30px -8px color-mix(in oklab, var(--red) 55%, transparent); }
+}
+
+/* Immediate hero entrance in CSS (runs at first paint, before hydration, so it
+   does not delay LCP or hide content without JS). */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.rise { animation: rise 0.6s cubic-bezier(.2,0,0,1) both; }
+.rise-2 { animation-delay: 0.08s; }
+.rise-3 { animation-delay: 0.16s; }
+.rise-4 { animation-delay: 0.24s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .glow-drift, .scan-line, .cta-rich::after, .rise { animation: none !important; transition: none !important; }
+  .scan-line { display: none; }
+  .card-rich { transition: none !important; }
+}
+
+@media (max-width: 640px) {
+  .glow-drift { opacity: 0.09; filter: blur(48px); }
+  .scan-line { display: none; }
+}
