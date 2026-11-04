@@ -7,8 +7,9 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ============================================================
-   ThreatVet v2 tokens: warm-tinted near-black, one signal red.
-   Red is the colour of findings and annotation, never a glow.
+   ThreatVet v2 tokens: warm-tinted near-black, one signal red,
+   one cool steel accent for telemetry and refractive hairlines.
+   Concept: a precise, living instrument viewed a few years ahead.
    ============================================================ */
 :root {
   --radius: 0.5rem;
@@ -29,6 +30,11 @@
   --red: #ef4444;
   --red-bright: #ff6b63;
   --red-dim: #4a1a18;    /* severity bars / deep annotation */
+
+  /* one cool accent: desaturated steel. Telemetry + holographic edge only.
+     Never a fill, never neon, never cyber-cyan. */
+  --accent-cool: #93a8c6;
+  --accent-cool-dim: #3b4760;
 
   /* shadcn semantic aliases → surfaces above */
   --background: var(--bg);
@@ -86,9 +92,13 @@
   --color-red: var(--red);
   --color-red-bright: var(--red-bright);
   --color-red-dim: var(--red-dim);
+  --color-accent-cool: var(--accent-cool);
+  --color-accent-cool-dim: var(--accent-cool-dim);
 
-  --font-sans: var(--font-plex-sans);
-  --font-mono: var(--font-plex-mono);
+  /* Type: Clash Display (headline) / Satoshi (body) / Geist Mono (tokens) */
+  --font-display: var(--font-clash);
+  --font-sans: var(--font-satoshi);
+  --font-mono: var(--font-geist);
 
   --radius-sm: calc(var(--radius) - 2px);
   --radius-md: var(--radius);
@@ -107,13 +117,15 @@
     background: var(--bg);
     color: var(--fg);
     font-family: var(--font-sans);
-    font-feature-settings: "cv05" 1, "ss01" 1;
+    font-synthesis-weight: none; /* no faux-bold when a weight is absent */
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
-  /* Tight, confident headline scale carries the page */
+  /* Editorial display voice carries the page. Clash Display on headings. */
   h1, h2, h3 {
-    letter-spacing: -0.02em;
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.015em;
     text-wrap: balance;
   }
   p { text-wrap: pretty; }
@@ -133,7 +145,7 @@
 
 /* ----- small, purposeful utilities (not decoration) ----- */
 
-/* faint engineered blueprint grid for the hero backdrop only */
+/* faint engineered blueprint grid, retained for pages not yet re-art-directed */
 .grid-faint {
   background-image:
     linear-gradient(to right, color-mix(in oklab, var(--line) 55%, transparent) 1px, transparent 1px),
@@ -150,52 +162,91 @@
 .dot { height: 0.5rem; width: 0.5rem; border-radius: 9999px; display: inline-block; }
 
 /* =========================================================
-   Rich motion and depth. Red and near-black only, GPU-friendly,
-   lightened on mobile, fully static under reduced motion.
+   Instrument material system: translucent glass, holographic
+   hairlines, volumetric depth. Red + near-black + one cool
+   steel accent only. GPU-friendly, lightened on mobile, fully
+   static under reduced motion. No flat grid, no scan gimmick.
    ========================================================= */
 
-/* low-opacity grain to kill flatness (static, cheap) */
+/* low-opacity grain to keep glass from reading flat (static, cheap) */
 .grain::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.04;
+  opacity: 0.035;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* red depth glow that drifts slowly (transform only) */
-.glow-drift {
-  position: absolute;
-  border-radius: 9999px;
-  filter: blur(70px);
-  background: radial-gradient(closest-side, color-mix(in oklab, var(--red) 60%, transparent), transparent 72%);
-  opacity: 0.16;
-  animation: glow-drift 26s ease-in-out infinite alternate;
-  will-change: transform;
+/* translucent glass panel */
+.glass {
+  background: color-mix(in oklab, var(--surface) 72%, transparent);
+  backdrop-filter: blur(14px) saturate(1.1);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  border: 1px solid color-mix(in oklab, var(--line) 85%, transparent);
 }
-.glow-drift-2 { animation-duration: 34s; animation-direction: alternate-reverse; opacity: 0.1; }
-@keyframes glow-drift {
-  from { transform: translate3d(-5%, -3%, 0) scale(1); }
-  to   { transform: translate3d(7%, 5%, 0) scale(1.18); }
+/* more opaque glass for text-dense panels, so contrast holds */
+.glass-strong {
+  background: color-mix(in oklab, var(--surface) 90%, transparent);
+  backdrop-filter: blur(16px) saturate(1.1);
+  -webkit-backdrop-filter: blur(16px) saturate(1.1);
+  border: 1px solid color-mix(in oklab, var(--line) 90%, transparent);
 }
 
-/* a single telemetry scan line */
-.scan-line {
+/* holographic hairline: a 1px refractive ring, cool → ink → red.
+   Host must set border-radius; pair with .glass (or any panel). */
+.edge-holo { position: relative; isolation: isolate; }
+.edge-holo::before {
+  content: "";
   position: absolute;
-  left: 0; right: 0; top: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--red) 70%, transparent), transparent);
-  opacity: 0;
-  animation: scan 9s linear infinite;
-  will-change: transform, opacity;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--accent-cool) 45%, transparent),
+    color-mix(in oklab, var(--accent-cool) 5%, transparent) 28%,
+    transparent 50%,
+    color-mix(in oklab, var(--red) 8%, transparent) 70%,
+    color-mix(in oklab, var(--red) 42%, transparent)
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  opacity: 0.75;
+  pointer-events: none;
 }
-@keyframes scan {
-  0% { transform: translateY(2rem); opacity: 0; }
-  12% { opacity: 0.55; }
-  88% { opacity: 0.55; }
-  100% { transform: translateY(26rem); opacity: 0; }
+
+/* restrained volumetric glow. Position with inline style. Static by default;
+   add .breathe for a slow, low-amplitude pulse. */
+.volume-glow {
+  position: absolute;
+  border-radius: 9999px;
+  pointer-events: none;
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--red) 55%, transparent), transparent 70%);
+  filter: blur(60px);
+  opacity: 0.14;
+  will-change: opacity;
+}
+.volume-glow.cool {
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--accent-cool) 42%, transparent), transparent 70%);
+  opacity: 0.08;
+}
+@keyframes volume-breathe { from { opacity: 0.09; } to { opacity: 0.17; } }
+.volume-glow.breathe { animation: volume-breathe 7.5s ease-in-out infinite alternate; }
+
+/* faint iso-contours implying a field with depth (no-WebGL base layer) */
+.field-contours {
+  background:
+    radial-gradient(58% 58% at 72% 22%, transparent 56%, color-mix(in oklab, var(--accent-cool) 8%, transparent) 59%, transparent 62%),
+    radial-gradient(82% 82% at 72% 22%, transparent 70%, color-mix(in oklab, var(--red) 7%, transparent) 72%, transparent 75%),
+    radial-gradient(120% 120% at 72% 22%, transparent 84%, color-mix(in oklab, var(--accent-cool) 5%, transparent) 86%, transparent 89%);
+}
+
+/* edges darken into the field, selling depth */
+.depth-vignette {
+  background: radial-gradient(130% 95% at 55% 12%, transparent 42%, color-mix(in oklab, var(--bg) 88%, transparent) 100%);
 }
 
 /* card hover: lift + border brighten + soft red glow */
@@ -207,7 +258,6 @@
     transform: translateY(-3px);
     border-color: color-mix(in oklab, var(--red) 45%, var(--line));
     box-shadow: 0 14px 34px -14px color-mix(in oklab, var(--red) 35%, transparent);
-    background-color: color-mix(in oklab, var(--surface-2) 65%, var(--surface));
   }
 }
 
@@ -238,12 +288,12 @@
 .rise-4 { animation-delay: 0.24s; }
 
 @media (prefers-reduced-motion: reduce) {
-  .glow-drift, .scan-line, .cta-rich::after, .rise { animation: none !important; transition: none !important; }
-  .scan-line { display: none; }
+  .volume-glow.breathe, .cta-rich::after, .rise { animation: none !important; transition: none !important; }
   .card-rich { transition: none !important; }
 }
 
 @media (max-width: 640px) {
-  .glow-drift { opacity: 0.09; filter: blur(48px); }
-  .scan-line { display: none; }
+  /* lighten depth on mobile; cut blur cost */
+  .glass, .glass-strong { backdrop-filter: blur(9px); -webkit-backdrop-filter: blur(9px); }
+  .volume-glow { opacity: 0.1; filter: blur(44px); }
 }
