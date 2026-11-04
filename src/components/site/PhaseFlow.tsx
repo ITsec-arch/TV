@@ -7,10 +7,12 @@ import { useAnimate } from "@/components/motion/useAnimate";
 export type Phase = { id: string; title: string; body?: string; branch?: boolean };
 
 /**
- * Vertical phase flow drawn with inline SVG (connectors + nodes), labels in
- * HTML. When it scrolls into view the spine draws and nodes light in sequence,
- * so the pipeline reads as flowing. Server, first render and reduced motion
- * render the final static state (no hydration mismatch, no hidden content).
+ * Vyra's pipeline as a vertical spine, sharing the home spine's motion
+ * language. When it scrolls into view the connectors draw and rows settle top
+ * to bottom, then each node carries a slow cool breathe ring, so the pipeline
+ * reads as a live instrument. Server, first render and reduced motion render
+ * the final static state (no hydration mismatch, no hidden content). Phase ids
+ * (pt-00) are technical tokens, so they stay mono.
  */
 export function PhaseFlow({ phases }: { phases: Phase[] }) {
   const anim = useAnimate();
@@ -22,6 +24,7 @@ export function PhaseFlow({ phases }: { phases: Phase[] }) {
   };
   const draw: Variants = { hidden: { pathLength: 0 }, show: { pathLength: 1, transition: { duration: 0.45, ease: [0.2, 0, 0, 1] } } };
   const nodeV: Variants = { hidden: { scale: 0 }, show: { scale: 1, transition: { duration: 0.3 } } };
+  const introDone = phases.length * 0.12 + 0.5;
 
   function content(p: Phase) {
     return (
@@ -66,6 +69,18 @@ export function PhaseFlow({ phases }: { phases: Phase[] }) {
             <svg className="h-full w-9" aria-hidden focusable="false">
               {!first && <line x1="18" y1="0" x2="18" y2="16" stroke="var(--line-strong)" strokeWidth="1.5" />}
               {!last && <motion.line x1="18" y1="16" x2="18" y2="100%" stroke="var(--line-strong)" strokeWidth="1.5" variants={draw} />}
+              <motion.circle
+                cx="18"
+                cy="16"
+                r={10}
+                fill="none"
+                stroke="var(--accent-cool)"
+                strokeWidth="1"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: [0, 0.3, 0.12, 0.3], scale: [0.8, 1.25, 1.05, 1.25] }}
+                transition={{ duration: 5, delay: introDone + i * 0.12, repeat: Infinity, ease: "easeInOut" }}
+                style={{ transformOrigin: "18px 16px" }}
+              />
               <motion.circle cx="18" cy="16" r={p.branch ? 4 : 5} fill={p.branch ? "var(--bg)" : "var(--red)"} stroke={p.branch ? "var(--red)" : "none"} strokeWidth="1.5" variants={nodeV} style={{ transformOrigin: "18px 16px" }} />
             </svg>
             {content(p)}
