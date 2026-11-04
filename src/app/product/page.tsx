@@ -4,7 +4,7 @@ import { Container } from "@/components/site/Container";
 import { JsonLd } from "@/components/site/JsonLd";
 import { PhaseFlow, type Phase } from "@/components/site/PhaseFlow";
 import { ProbeMatrix } from "@/components/site/ProbeMatrix";
-import { HeroBackdrop } from "@/components/motion/HeroBackdrop";
+import { InstrumentField } from "@/components/motion/InstrumentField";
 import { CountUp } from "@/components/motion/CountUp";
 import { Appear } from "@/components/motion/Appear";
 import { Button } from "@/components/ui/button";
@@ -62,41 +62,51 @@ export default function ProductPage() {
       />
 
       {/* HERO */}
-      <section className="grain relative overflow-hidden border-b border-line">
-        <HeroBackdrop />
+      <section className="relative overflow-hidden border-b border-line">
+        <InstrumentField />
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-[linear-gradient(100deg,var(--bg)_0%,color-mix(in_oklab,var(--bg)_72%,transparent)_46%,transparent_78%)]"
+        />
         <Container className="relative z-10 py-16 md:py-24">
-          <div className="max-w-3xl">
-            <div className="rise flex items-center gap-2 text-sm text-fg-subtle">
-              <span className="font-mono text-red">vyra</span>
-              <span aria-hidden>/</span>
-              <span>the engine behind our engagements</span>
-            </div>
-            <div className="rise rise-2">
-              <h1 className="mt-5 text-4xl font-semibold leading-[1.05] tracking-tight text-fg sm:text-5xl md:text-6xl">
+          <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+            <div className="max-w-2xl">
+              <div className="rise flex items-center gap-2 text-sm text-fg-subtle">
+                <span className="font-mono text-red">vyra</span>
+                <span aria-hidden>/</span>
+                <span>the engine behind our engagements</span>
+              </div>
+              <h1 className="rise rise-2 mt-5 text-[2.4rem] leading-[1.04] text-fg sm:text-5xl md:text-6xl">
                 Our autonomous offensive-testing engine.
               </h1>
-            </div>
-            <div className="rise rise-3">
-              <p className="mt-6 max-w-2xl text-lg leading-relaxed text-fg-muted">
+              <p className="rise rise-3 mt-6 max-w-2xl text-lg leading-relaxed text-fg-muted">
                 Vyra runs a disciplined, repeatable pipeline across the attack surface,
                 so coverage does not depend on which day of the week a tester got to
                 your target. A human operator drives exploitation and judgement. Vyra
                 does not replace manual testing. It makes the manual testing count.
               </p>
-            </div>
-            <div className="rise rise-4">
-              <dl className="mt-8 flex flex-wrap gap-x-10 gap-y-4">
-                {specs.map((s) => (
-                  <div key={s.label}>
-                    <dt className="text-3xl font-semibold text-fg">
-                      <CountUp value={s.value} suffix={s.suffix} />
-                    </dt>
-                    <dd className="mt-0.5 text-sm text-fg-muted">{s.label}</dd>
-                  </div>
-                ))}
-              </dl>
-              <div className="mt-8">
+              <div className="rise rise-4 mt-8">
                 <Button asChild size="lg" className="cta-rich"><Link href="/contact?topic=consulting">Put Vyra on your engagement</Link></Button>
+              </div>
+            </div>
+
+            {/* spec readout */}
+            <div className="rise rise-3">
+              <div className="glass edge-holo rounded-xl">
+                <div className="flex items-center justify-between border-b border-line/70 px-4 py-3">
+                  <span className="font-mono text-xs text-fg-subtle">vyra</span>
+                  <span className="font-mono text-xs text-accent-cool">pipeline spec</span>
+                </div>
+                <dl className="divide-y divide-line/60">
+                  {specs.map((s) => (
+                    <div key={s.label} className="flex items-baseline justify-between gap-4 px-4 py-4">
+                      <dt className="text-sm text-fg-muted">{s.label}</dt>
+                      <dd className="font-display text-2xl text-fg sm:text-3xl">
+                        <CountUp value={s.value} suffix={s.suffix} />
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
               </div>
             </div>
           </div>
@@ -108,7 +118,7 @@ export default function ProductPage() {
         <Container className="py-16 md:py-20">
           <div className="grid gap-12 md:grid-cols-2">
             <Appear preset="left">
-              <h2 className="text-2xl font-semibold tracking-tight text-fg sm:text-3xl">What Vyra is</h2>
+              <h2 className="text-2xl tracking-tight text-fg sm:text-3xl">What Vyra is</h2>
               <p className="mt-5 text-base leading-relaxed text-fg-muted">
                 An orchestration engine that runs the broad, repeatable parts of an
                 assessment: discovery, mapping, and probing across a wide set of
@@ -117,7 +127,7 @@ export default function ProductPage() {
               </p>
             </Appear>
             <Appear preset="up">
-              <h2 className="text-2xl font-semibold tracking-tight text-fg sm:text-3xl">What it is not</h2>
+              <h2 className="text-2xl tracking-tight text-fg sm:text-3xl">What it is not</h2>
               <p className="mt-5 text-base leading-relaxed text-fg-muted">
                 It is not a replacement for a tester. Automation is good at breadth
                 and bad at judgement, chaining and business logic. Those stay with a
@@ -133,14 +143,16 @@ export default function ProductPage() {
       <section className="border-b border-line">
         <Container className="py-16 md:py-20">
           <Appear preset="up">
-            <h2 className="text-2xl font-semibold tracking-tight text-fg sm:text-3xl">The pipeline</h2>
+            <h2 className="text-2xl tracking-tight text-fg sm:text-3xl">The pipeline</h2>
             <p className="mt-4 max-w-2xl text-base text-fg-muted">
               Eleven phases from scope to report. Phase pt-05b is a validation branch:
               a candidate is confirmed before it is ever trusted or exploited.
             </p>
           </Appear>
           <div className="mt-10 max-w-2xl">
-            <PhaseFlow phases={phases} />
+            <div className="glass edge-holo rounded-xl p-6 md:p-8">
+              <PhaseFlow phases={phases} />
+            </div>
           </div>
         </Container>
       </section>
@@ -149,7 +161,7 @@ export default function ProductPage() {
       <section className="border-b border-line">
         <Container className="py-16 md:py-20">
           <Appear preset="up">
-            <h2 className="text-2xl font-semibold tracking-tight text-fg sm:text-3xl">Probe categories</h2>
+            <h2 className="text-2xl tracking-tight text-fg sm:text-3xl">Probe categories</h2>
             <p className="mt-4 max-w-2xl text-base text-fg-muted">
               The 27 categories Vyra covers on a web and API engagement.
             </p>
@@ -165,7 +177,7 @@ export default function ProductPage() {
         <Container className="py-16 md:py-20">
           <div className="grid gap-12 md:grid-cols-2">
             <Appear preset="left">
-              <h2 className="text-2xl font-semibold tracking-tight text-fg sm:text-3xl">How it fits your stack</h2>
+              <h2 className="text-2xl tracking-tight text-fg sm:text-3xl">How it fits your stack</h2>
               <p className="mt-5 text-base leading-relaxed text-fg-muted">
                 Vyra orchestrates proven tools, including browser automation and an
                 intercepting proxy, through a single control layer, and it produces
@@ -179,7 +191,7 @@ export default function ProductPage() {
               </ul>
             </Appear>
             <Appear preset="up">
-              <h2 className="text-2xl font-semibold tracking-tight text-fg sm:text-3xl">Where it is going</h2>
+              <h2 className="text-2xl tracking-tight text-fg sm:text-3xl">Where it is going</h2>
               <p className="mt-5 text-base leading-relaxed text-fg-muted">
                 The direction is continuous: recurring runs that watch a surface over
                 time, so a new exposure is caught when it appears rather than at the
@@ -194,11 +206,11 @@ export default function ProductPage() {
       <section>
         <Container className="py-16 md:py-24">
           <Appear preset="scale">
-            <div className="relative overflow-hidden rounded-lg border border-line bg-surface p-8 md:p-12">
-              <div className="glow-drift pointer-events-none" style={{ top: "-40%", right: "-10%", width: "26rem", height: "26rem", opacity: 0.12 }} aria-hidden />
+            <div className="glass edge-holo relative overflow-hidden rounded-2xl p-8 md:p-12">
+              <div className="volume-glow breathe" style={{ top: "-45%", right: "-8%", width: "26rem", height: "26rem" }} aria-hidden />
               <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
                 <div className="max-w-xl">
-                  <h2 className="text-2xl font-semibold tracking-tight text-fg sm:text-3xl">See Vyra on your next engagement</h2>
+                  <h2 className="text-2xl tracking-tight text-fg sm:text-3xl">See Vyra on your next engagement</h2>
                   <p className="mt-3 text-base text-fg-muted">
                     Vyra ships as part of our testing, not as a box to run yourself.
                     Scope an engagement and it does the heavy lifting underneath.
