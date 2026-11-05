@@ -31,7 +31,7 @@ function supportsWebGL() {
  * opacity only; the whole group drifts a few px with the pointer (desktop,
  * motion only), so the instrument feels alive without flashing.
  */
-export function InstrumentField({ className }: { className?: string }) {
+export function InstrumentField({ className, webgl = true }: { className?: string; webgl?: boolean }) {
   const reduce = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
   const [gl, setGl] = useState(false);
@@ -46,7 +46,7 @@ export function InstrumentField({ className }: { className?: string }) {
   useEffect(() => {
     if (reduce) return;
     const desktop = window.matchMedia("(min-width: 768px)").matches;
-    if (desktop && supportsWebGL()) setGl(true);
+    if (desktop && webgl && supportsWebGL()) setGl(true);
     if (!desktop) return;
     const host = ref.current?.parentElement;
     if (!host) return;
@@ -57,7 +57,7 @@ export function InstrumentField({ className }: { className?: string }) {
     };
     host.addEventListener("mousemove", onMove);
     return () => host.removeEventListener("mousemove", onMove);
-  }, [reduce, mx, my]);
+  }, [reduce, mx, my, webgl]);
 
   return (
     <div ref={ref} aria-hidden className={cn("pointer-events-none absolute inset-0 overflow-hidden", className)}>

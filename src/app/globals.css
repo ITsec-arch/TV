@@ -36,6 +36,9 @@
   --accent-cool: #93a8c6;
   --accent-cool-dim: #3b4760;
 
+  /* motion: the one snap curve the home hero and the hero video share */
+  --ease-snap: cubic-bezier(.7,0,.2,1);
+
   /* shadcn semantic aliases → surfaces above */
   --background: var(--bg);
   --foreground: var(--fg);
@@ -287,8 +290,28 @@
 .rise-3 { animation-delay: 0.16s; }
 .rise-4 { animation-delay: 0.24s; }
 
+/* Hero entrance as a WIPE, not a fade, on the shared snap curve so the live
+   hero and the hero video read as one system. Pure clip reveal (no opacity
+   fade). Runs at first paint in CSS; reduced motion shows the final state. */
+@keyframes wipe-up {
+  from { clip-path: inset(0 0 100% 0); }
+  to   { clip-path: inset(0 0 -12% 0); }
+}
+.wipe { animation: wipe-up 0.62s var(--ease-snap) both; }
+.wipe-2 { animation-delay: 0.10s; }
+.wipe-3 { animation-delay: 0.20s; }
+.wipe-4 { animation-delay: 0.30s; }
+
+/* Clash Display kinetic headline: a left-to-right clip reveal, the wordmark
+   treatment lifted from the hero video, on the same snap curve. */
+@keyframes kinetic-reveal {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 -6% 0 0); }
+}
+.kinetic { animation: kinetic-reveal 0.85s var(--ease-snap) both; }
+
 @media (prefers-reduced-motion: reduce) {
-  .volume-glow.breathe, .cta-rich::after, .rise { animation: none !important; transition: none !important; }
+  .volume-glow.breathe, .cta-rich::after, .rise, .wipe, .kinetic { animation: none !important; transition: none !important; }
   .card-rich { transition: none !important; }
 }
 
