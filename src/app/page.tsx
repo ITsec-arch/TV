@@ -1,8 +1,9 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Container } from "@/components/site/Container";
 import { JsonLd } from "@/components/site/JsonLd";
 import { InstrumentField } from "@/components/motion/InstrumentField";
-import { AttackPathGraph } from "@/components/motion/AttackPathGraph";
+import { HeroLoop } from "@/components/motion/HeroLoop";
 import { CountUp } from "@/components/motion/CountUp";
 import { Parallax } from "@/components/motion/Parallax";
 import { Appear, AppearItem } from "@/components/motion/Appear";
@@ -33,8 +34,8 @@ export default function HomePage() {
 
       {/* HERO */}
       <section className="relative overflow-hidden border-b border-line">
-        <InstrumentField />
-        {/* ink scrim keeps the headline column AA over the field */}
+        <InstrumentField webgl={false} />
+        {/* ink scrim keeps the headline column AA over the field and video */}
         <div
           aria-hidden
           className="absolute inset-0 bg-[linear-gradient(100deg,var(--bg)_0%,color-mix(in_oklab,var(--bg)_74%,transparent)_42%,transparent_74%)]"
@@ -42,28 +43,28 @@ export default function HomePage() {
         <Container className="relative z-10 py-20 md:py-28 lg:py-32">
           <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
             <div className="max-w-2xl">
-              <div className="rise">
+              <div className="wipe">
                 <span className="glass inline-flex items-center gap-2 rounded-full border-line/80 px-3 py-1 text-xs text-fg-muted">
                   <span aria-hidden className="size-1.5 rounded-full bg-red" />
                   Practitioner-led offensive security
                 </span>
               </div>
-              <h1 className="rise rise-2 mt-5 text-[2.55rem] leading-[1.02] text-fg sm:text-5xl md:text-6xl">
+              <h1 className="kinetic mt-5 text-[2.55rem] leading-[1.02] text-fg sm:text-5xl md:text-6xl">
                 Offensive security you can verify, not just trust.
               </h1>
-              <p className="rise rise-3 mt-6 max-w-xl text-lg leading-relaxed text-fg-muted">
+              <p className="wipe wipe-3 mt-6 max-w-xl text-lg leading-relaxed text-fg-muted">
                 A boutique, practitioner-led firm for penetration testing, AI
                 security, threat hunting and biometric testing. Every engagement
                 runs on Vyra, our autonomous testing engine, and is driven by
                 senior testers who prove the impact.
               </p>
-              <div className="rise rise-4 mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
+              <div className="wipe wipe-4 mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
                 <Button asChild size="lg" className="cta-rich">
                   <Link href="/contact?topic=consulting">Request a scoped quote</Link>
                 </Button>
                 <Link href="/services" className="text-sm font-medium text-fg hover:text-red-bright">Explore services</Link>
               </div>
-              <div className="rise rise-4 mt-8 border-t border-line/70 pt-6">
+              <div className="wipe wipe-4 mt-8 border-t border-line/70 pt-6">
                 <p className="text-sm text-fg-subtle">Verifiable research, four credited CVEs:</p>
                 <ul className="mt-3 flex flex-wrap gap-2">
                   {cves.map((c) => (
@@ -86,7 +87,25 @@ export default function HomePage() {
             </div>
 
             <Parallax amount={20} className="lg:pl-4">
-              <AttackPathGraph />
+              {/* The bespoke hero loop, framed as an instrument display. The
+                  poster is the immediate paint (LCP candidate, no layout shift)
+                  and the no-JS / reduced-motion / mobile still. The video is
+                  decorative and plays over it on desktop with motion allowed. */}
+              <div className="glass edge-holo relative aspect-video overflow-hidden rounded-xl">
+                <Image
+                  src="/hero/threatvet-hero-poster.png"
+                  alt="Illustrative attack path moving through recon, foothold, escalation and impact."
+                  fill
+                  priority
+                  sizes="(min-width: 1024px) 45vw, 100vw"
+                  className="object-cover"
+                />
+                <HeroLoop
+                  webm="/hero/threatvet-hero-16x9.webm"
+                  mp4="/hero/threatvet-hero-16x9.mp4"
+                  poster="/hero/threatvet-hero-poster.png"
+                />
+              </div>
             </Parallax>
           </div>
         </Container>
