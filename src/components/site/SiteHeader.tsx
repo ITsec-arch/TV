@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { Container } from "@/components/site/Container";
 import { Wordmark } from "@/components/site/Wordmark";
@@ -13,6 +14,7 @@ const services = nav.find((n) => n.children)?.children ?? [];
 const topLinks = nav.filter((n) => !n.children);
 
 export function SiteHeader() {
+  const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const servicesRef = useRef<HTMLLIElement>(null);
@@ -44,7 +46,12 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 border-b border-line bg-bg/80 backdrop-blur supports-[backdrop-filter]:bg-bg/60">
       <Container>
         <div className="flex h-16 items-center justify-between gap-4">
-          <Link href="/" className="shrink-0 text-base" aria-label="ThreatVet home">
+          <Link
+            href="/"
+            className="shrink-0 text-base"
+            aria-label="ThreatVet home"
+            aria-current={pathname === "/" ? "page" : undefined}
+          >
             <Wordmark />
           </Link>
 
@@ -71,7 +78,7 @@ export function SiteHeader() {
                   hidden={!servicesOpen}
                   className="absolute left-0 top-full w-[22rem] pt-2"
                 >
-                  <div className="overflow-hidden rounded-lg border border-line bg-surface-2 shadow-xl shadow-black/40">
+                  <div className="soft-shadow-lg overflow-hidden rounded-lg border border-line bg-surface-2">
                     {services.map((c) => (
                       <Link
                         key={c.href}
@@ -87,16 +94,23 @@ export function SiteHeader() {
                   </div>
                 </div>
               </li>
-              {topLinks.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className="rounded-md px-3 py-2 text-sm text-fg-muted transition-colors hover:text-fg"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
+              {topLinks.map((item) => {
+                const current = pathname === item.href;
+                return (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      aria-current={current ? "page" : undefined}
+                      className={cn(
+                        "rounded-md px-3 py-2 text-sm transition-colors hover:text-fg",
+                        current ? "text-fg" : "text-fg-muted",
+                      )}
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </nav>
 

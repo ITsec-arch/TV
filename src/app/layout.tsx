@@ -1,41 +1,26 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import localFont from "next/font/local";
-import { Geist_Mono } from "next/font/google";
+import { Hanken_Grotesk, Source_Code_Pro } from "next/font/google";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { site } from "@/lib/site";
 
-/* Display: Clash Display (Fontshare), self-hosted. Editorial headline voice. */
-const clash = localFont({
-  src: [
-    { path: "./fonts/ClashDisplay-Medium.woff2", weight: "500", style: "normal" },
-    { path: "./fonts/ClashDisplay-Semibold.woff2", weight: "600", style: "normal" },
-    { path: "./fonts/ClashDisplay-Bold.woff2", weight: "700", style: "normal" },
-  ],
-  variable: "--font-clash",
-  display: "swap",
-  fallback: ["ui-sans-serif", "system-ui", "sans-serif"],
-});
-
-/* Body / UI: Satoshi (Fontshare), self-hosted. */
-const satoshi = localFont({
-  src: [
-    { path: "./fonts/Satoshi-Regular.woff2", weight: "400", style: "normal" },
-    { path: "./fonts/Satoshi-Medium.woff2", weight: "500", style: "normal" },
-    { path: "./fonts/Satoshi-Bold.woff2", weight: "700", style: "normal" },
-  ],
-  variable: "--font-satoshi",
-  display: "swap",
-  fallback: ["ui-sans-serif", "system-ui", "sans-serif"],
-});
-
-/* Technical tokens only (CVE IDs, phase ids, payloads). */
-const geistMono = Geist_Mono({
+/* Display + body: Hanken Grotesk. Humanist, warm, editorial headline voice. */
+const hanken = Hanken_Grotesk({
   subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-geist",
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-hanken",
   display: "swap",
+  fallback: ["ui-sans-serif", "system-ui", "sans-serif"],
+});
+
+/* Identifiers only (CVE IDs, phase ids, payloads). Matches the reference mono. */
+const sourceCode = Source_Code_Pro({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-source-code",
+  display: "swap",
+  fallback: ["ui-monospace", "monospace"],
 });
 
 const description =
@@ -66,9 +51,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${clash.variable} ${satoshi.variable} ${geistMono.variable} min-h-screen antialiased`}
+        className={`${hanken.variable} ${sourceCode.variable} min-h-screen antialiased`}
         suppressHydrationWarning
       >
         <a

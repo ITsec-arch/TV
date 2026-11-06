@@ -10,7 +10,7 @@ export function SiteFooter() {
   const gst = gstin();
 
   return (
-    <footer className="mt-24 border-t border-line bg-surface/40">
+    <footer className="mt-24 border-t border-line bg-band-quiet">
       <Container className="py-14">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
           {/* Brand + posture */}
@@ -83,9 +83,9 @@ export function SiteFooter() {
 
         <div className="mt-12 flex flex-col gap-2 border-t border-line pt-6 text-xs text-fg-subtle sm:flex-row sm:items-center sm:justify-between">
           <p>
-            &copy; {year} {site.name}. All rights reserved.
+            &copy; {year} {site.name}
           </p>
-          <p>Chennai &middot; UAE &middot; USA</p>
+          <p>Chennai, UAE and USA</p>
         </div>
       </Container>
     </footer>
