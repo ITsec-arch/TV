@@ -12,31 +12,31 @@
    Concept: a precise, living instrument viewed a few years ahead.
    ============================================================ */
 :root {
-  color-scheme: light;
+  color-scheme: dark;
   --radius: 0.625rem;
 
-  /* raw surfaces (warm paper ramp) */
-  --bg: #f7f6f3;         /* paper page */
-  --surface: #ffffff;    /* raised panel / card */
-  --surface-2: #fbfaf8;  /* popover / higher panel */
-  --line: #e5e2db;       /* warm hairline */
-  --line-strong: #d8d3ca;
-  --band-quiet: #f1efea; /* alternate quiet section fill */
+  /* deep premium canvas (Linear-grade near-black, faintly cool) */
+  --bg: #08090a;         /* canvas */
+  --surface: #0f1011;    /* raised panel / card */
+  --surface-2: #161719;  /* popover / higher panel */
+  --line: #212225;       /* subtle hairline */
+  --line-strong: #303136;
+  --band-quiet: #0d0e10; /* barely-raised alternate section fill */
 
-  /* text (warm ink to ash), all AA on paper */
-  --fg: #1c1b18;
-  --fg-muted: #5f5b54;
-  --fg-subtle: #6b665e;
+  /* text: off-white and muted greys (never pure white for body) */
+  --fg: #f6f7f8;
+  --fg-muted: #9aa0a8;
+  --fg-subtle: #868c93; /* AA 4.5:1+ on every surface; dimmer than --fg-muted */
 
-  /* signal red (single accent), tuned for paper */
-  --red: #c23b2e;        /* links, UI, the one signal (AA 4.91 on paper) */
-  --red-bright: #a82f24; /* hover: deeper red on a light ground */
-  --red-dim: #e7cfca;    /* pale red tint for fills / severity bars */
-  --band-red: #9e2f26;   /* the one full-bleed confident band (white text) */
+  /* signal red (single accent), sharp but not neon on black */
+  --red: #ff5c52;        /* the one signal (AA 6.55 on canvas) */
+  --red-bright: #ff7a70; /* hover / glow peak */
+  --red-dim: #3a1512;    /* deep red for severity fills / annotation */
+  --band-red: #c2362b;   /* deep red for a full-bleed moment */
 
-  /* one cool accent, kept defined for the not-yet-reskinned inner pages only */
-  --accent-cool: #5b7a9c;
-  --accent-cool-dim: #c3cedd;
+  /* cool steel accent: telemetry and refractive edges only, restrained */
+  --accent-cool: #8aa0c4;
+  --accent-cool-dim: #2a3348;
 
   /* motion: the one snap curve shared across authored moments */
   --ease-snap: cubic-bezier(.7,0,.2,1);
@@ -49,15 +49,15 @@
   --popover: var(--surface-2);
   --popover-foreground: var(--fg);
   --primary: var(--red);
-  --primary-foreground: #ffffff;   /* white text on red (AA 5.30) */
-  --secondary: var(--band-quiet);
+  --primary-foreground: #1a0806;   /* near-black on red (AA 6.39) */
+  --secondary: var(--surface);
   --secondary-foreground: var(--fg);
-  --muted: var(--band-quiet);
+  --muted: var(--surface);
   --muted-foreground: var(--fg-muted);
-  --accent: var(--band-quiet);     /* neutral interaction surface */
+  --accent: var(--surface-2);      /* neutral interaction surface */
   --accent-foreground: var(--fg);
   --destructive: var(--red);
-  --destructive-foreground: #ffffff;
+  --destructive-foreground: #1a0806;
   --border: var(--line);
   --input: var(--line);
   --ring: var(--red);
@@ -194,6 +194,7 @@
   backdrop-filter: blur(14px) saturate(1.1);
   -webkit-backdrop-filter: blur(14px) saturate(1.1);
   border: 1px solid color-mix(in oklab, var(--line) 85%, transparent);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
 }
 /* more opaque glass for text-dense panels, so contrast holds */
 .glass-strong {
@@ -391,4 +392,26 @@
 .settle-4 { animation-delay: 0.24s; }
 @media (prefers-reduced-motion: reduce) {
   .settle, .settle-2, .settle-3, .settle-4 { animation: none !important; }
+}
+
+/* Findings marquee: two rows roll in opposite directions and pause on hover or
+   keyboard focus. Under reduced motion the animation stops, the duplicate set
+   is hidden, and the row becomes a plain horizontal scroll so every finding
+   stays reachable. Transform-only, so it composites off the main thread. */
+@keyframes tv-marquee-l { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes tv-marquee-r { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+.marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+.marquee-track { display: flex; width: max-content; will-change: transform; }
+.marquee-track-l { animation: tv-marquee-l 62s linear infinite; }
+.marquee-track-r { animation: tv-marquee-r 74s linear infinite; }
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .marquee { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
+  .marquee-track { animation: none; }
+  .marquee-clone { display: none; }
 }

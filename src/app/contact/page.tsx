@@ -22,9 +22,10 @@ export default async function ContactPage({
   searchParams: Promise<{ topic?: string }>;
 }) {
   const { topic } = await searchParams;
-  const defaultTopic: EnquiryTopic = VALID.includes(topic as EnquiryTopic)
-    ? (topic as EnquiryTopic)
-    : "general";
+  const defaultTopic: EnquiryTopic =
+    topic && (VALID as readonly string[]).includes(topic)
+      ? (topic as EnquiryTopic)
+      : "general";
 
   return (
     <>

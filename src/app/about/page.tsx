@@ -18,7 +18,7 @@ export const metadata: Metadata = pageMetadata({
 
 const principles = [
   { title: "Senior testers, every time", body: "A small team by design. The person who scopes your work is the person who does it. No handoff to juniors." },
-  { title: "Proof over claims", body: "We would rather show you a credited CVE than a logo wall. If we say we found something, you can reproduce it." },
+  { title: "Proof over claims", body: "We would rather show you a credited CVE than a wall of client logos. If we say we found something, you can reproduce it." },
   { title: "Honest about automation", body: "Our engine widens coverage. People drive exploitation and judgement. We never pretend a tool replaces a tester." },
   { title: "Plain reports", body: "Findings a developer can act on: what, where, why it matters, and how to fix it." },
 ];

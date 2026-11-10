@@ -101,7 +101,6 @@ export function courseLd(opts: {
     hasCourseInstance: {
       "@type": "CourseInstance",
       courseMode: "online",
-      courseWorkload: "PT16H",
     },
   };
 }

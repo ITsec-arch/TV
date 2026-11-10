@@ -47,6 +47,10 @@ const hits = new Map<string, { count: number; resetAt: number }>();
 
 function rateLimited(ip: string): boolean {
   const now = Date.now();
+  // Bound memory: sweep expired buckets once the map grows large.
+  if (hits.size > 5000) {
+    for (const [k, v] of hits) if (now > v.resetAt) hits.delete(k);
+  }
   const rec = hits.get(ip);
   if (!rec || now > rec.resetAt) {
     hits.set(ip, { count: 1, resetAt: now + WINDOW_MS });
@@ -57,10 +61,15 @@ function rateLimited(ip: string): boolean {
   return false;
 }
 
+// Best-effort client IP. Prefer the platform-set x-real-ip over the leftmost
+// x-forwarded-for, which a client can spoof to rotate past the rate limit. IP
+// limiting is a coarse control; the honeypot below is the primary bot guard.
 function clientIp(req: NextRequest): string {
+  const real = req.headers.get("x-real-ip");
+  if (real) return real.trim();
   const xff = req.headers.get("x-forwarded-for");
   if (xff) return xff.split(",")[0]!.trim();
-  return req.headers.get("x-real-ip") ?? "unknown";
+  return "unknown";
 }
 
 export async function POST(req: NextRequest) {
@@ -69,7 +78,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: false, error: "RATE_LIMITED" }, { status: 429 });
     }
 
-    const json = (await req.json()) as unknown;
+    const json = (await req.json()) as Record<string, unknown>;
+
+    // Honeypot: a hidden field real users never fill. If it has content, treat
+    // the sender as a bot and drop silently with a success response (no email).
+    if (typeof json.website === "string" && json.website.trim() !== "") {
+      return NextResponse.json({ ok: true });
+    }
+
     const { name, email, company, phone, message, topic } = ContactSchema.parse(json);
 
     const route = TOPIC[topic];

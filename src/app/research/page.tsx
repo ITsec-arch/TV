@@ -29,7 +29,7 @@ export default function ResearchPage() {
               Proof you can check yourself.
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-fg-muted">
-              We would rather show you verifiable work than a wall of logos. Below are
+              We would rather show you verifiable work than a wall of client logos. Below are
               credited CVEs, each linking to the vendor advisory and the public NVD
               record. Follow them and confirm the work is real.
             </p>

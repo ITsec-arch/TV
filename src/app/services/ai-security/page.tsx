@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Container } from "@/components/site/Container";
 import { JsonLd } from "@/components/site/JsonLd";
 import { FindingRecord } from "@/components/site/FindingRecord";
+import { FieldShowcase } from "@/components/site/FieldShowcase";
 import { StandardsTable } from "@/components/site/StandardsTable";
 import { Button } from "@/components/ui/button";
 import { pageMetadata, professionalServiceLd, serviceLd } from "@/lib/seo";
@@ -201,6 +202,25 @@ export default function AiSecurityPage() {
               </li>
             ))}
           </ul>
+        </Container>
+      </section>
+
+      {/* VYRA IN THE FIELD */}
+      <section className="border-b border-line">
+        <Container className="py-16 md:py-20">
+          <h2 className="max-w-2xl text-2xl font-semibold tracking-tight text-fg sm:text-3xl">
+            Vyra in the field
+          </h2>
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-fg-muted">
+            Vyra has surfaced real vulnerabilities, up to Critical severity, in
+            authorized bug-bounty and coordinated-disclosure programs. Most stay
+            under program disclosure terms, so we show what we can and link
+            what you can check.
+          </p>
+
+          <div className="mt-10">
+            <FieldShowcase variant="full" />
+          </div>
         </Container>
       </section>
 

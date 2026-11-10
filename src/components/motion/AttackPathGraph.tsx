@@ -81,13 +81,13 @@ export function AttackPathGraph() {
         );
       })}
       {/* one traversal pulse, recon to impact, repeating calmly */}
-      <motion.circle
-        r={3.5}
-        fill="var(--red-bright)"
-        initial={{ opacity: 0 }}
-        animate={{ cx: NODES.map((n) => n.x), cy: NODES.map((n) => n.y), opacity: [0, 1, 1, 1, 0] }}
+      <motion.g
+        initial={{ opacity: 0, x: NODES[0].x, y: NODES[0].y }}
+        animate={{ x: NODES.map((n) => n.x), y: NODES.map((n) => n.y), opacity: [0, 1, 1, 1, 0] }}
         transition={{ duration: 2.4, delay: INTRO + 0.3, repeat: Infinity, repeatDelay: 2.8, ease: "easeInOut" }}
-      />
+      >
+        <circle r={3.5} fill="var(--red-bright)" />
+      </motion.g>
     </motion.svg>
   ) : (
     <svg viewBox="0 0 400 300" className="h-auto w-full" role="img" aria-label="Illustrative attack path from reconnaissance to impact">

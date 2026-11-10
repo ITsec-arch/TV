@@ -74,7 +74,6 @@ export function SiteHeader() {
                 </button>
                 <div
                   id="services-menu"
-                  role="menu"
                   hidden={!servicesOpen}
                   className="absolute left-0 top-full w-[22rem] pt-2"
                 >
@@ -83,7 +82,6 @@ export function SiteHeader() {
                       <Link
                         key={c.href}
                         href={c.href}
-                        role="menuitem"
                         className="block border-b border-line/70 px-4 py-3 last:border-0 hover:bg-surface"
                         onClick={() => setServicesOpen(false)}
                       >

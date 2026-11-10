@@ -37,6 +37,7 @@ export function ContactForm({ defaultTopic = "general" }: { defaultTopic?: Enqui
       company: String(fd.get("company") ?? ""),
       phone: String(fd.get("phone") ?? ""),
       message: String(fd.get("message") ?? ""),
+      website: String(fd.get("website") ?? ""), // honeypot, stays empty for real users
     };
 
     try {
@@ -135,6 +136,12 @@ export function ContactForm({ defaultTopic = "general" }: { defaultTopic?: Enqui
           ) : null}
           {status === "error" ? <span className="text-red-bright">{errorMsg}</span> : null}
         </p>
+      </div>
+
+      {/* Honeypot: hidden from people, tempting to bots. Must stay empty. */}
+      <div className="hidden" aria-hidden>
+        <label htmlFor="website">Website</label>
+        <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
       </div>
     </form>
   );

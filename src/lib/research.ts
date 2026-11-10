@@ -78,7 +78,7 @@ export const cves: Cve[] = [
 ];
 
 // Research was conducted and credited through this employer at the time.
-export const creditedThrough = "Cybersecurity Works";
+export const creditedThrough = "CybersecurityWorks Research Labs";
 
 export type Writeup = {
   slug: string;

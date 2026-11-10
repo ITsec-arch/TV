@@ -47,11 +47,12 @@ export const metadata: Metadata = {
     description,
   },
   manifest: "/site.webmanifest",
+  icons: { apple: "/icon.png" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="dark" suppressHydrationWarning>
       <body
         className={`${hanken.variable} ${sourceCode.variable} min-h-screen antialiased`}
         suppressHydrationWarning

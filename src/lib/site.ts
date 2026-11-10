@@ -46,6 +46,7 @@ export const nav: NavItem[] = [
       },
     ],
   },
+  { label: "AI Agents", href: "/agents" },
   { label: "Vyra", href: "/product" },
   { label: "Packages", href: "/packages" },
   { label: "Academy", href: "/academy" },
