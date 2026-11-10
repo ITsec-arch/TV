@@ -61,7 +61,15 @@ export default async function ContactPage({
                     <a className="text-fg hover:text-red-bright" href={`mailto:${site.email}`}>{site.email}</a>
                   </li>
                   <li>
-                    <a className="text-fg hover:text-red-bright" href={site.phoneHref}>{site.phone}</a>
+                    <a
+                      className="text-fg hover:text-red-bright"
+                      href={site.whatsappHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Chat with us on WhatsApp at ${site.phone}`}
+                    >
+                      {site.phone} <span className="text-xs text-fg-subtle">WhatsApp</span>
+                    </a>
                   </li>
                 </ul>
               </div>

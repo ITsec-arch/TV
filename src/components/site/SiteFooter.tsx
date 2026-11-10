@@ -32,10 +32,16 @@ export function SiteFooter() {
                 </dd>
               </div>
               <div className="flex gap-2">
-                <dt className="sr-only">Phone</dt>
+                <dt className="sr-only">WhatsApp</dt>
                 <dd>
-                  <a className="text-fg hover:text-red-bright" href={site.phoneHref}>
-                    {site.phone}
+                  <a
+                    className="text-fg hover:text-red-bright"
+                    href={site.whatsappHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Chat with us on WhatsApp at ${site.phone}`}
+                  >
+                    {site.phone} <span className="text-xs text-fg-subtle">WhatsApp</span>
                   </a>
                 </dd>
               </div>
