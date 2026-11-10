@@ -45,12 +45,13 @@ export default function ServicesPage() {
         <Container className="relative py-16 md:py-24">
           <div className="max-w-3xl">
             <h1 className="text-4xl font-semibold leading-[1.05] tracking-tight text-fg sm:text-5xl md:text-6xl">
-              Offensive security, done by people who prove it.
+              Security, done by people who prove it.
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-fg-muted">
-              Four service lines, one standard: find the real issue, prove the
-              impact, and come back to check the fix. Every engagement is backed by
-              verifiable research and run by senior testers.
+              Offensive, defensive and strategic security under one standard: find
+              the real issue, prove the impact, and come back to check the fix.
+              Every engagement is backed by verifiable research and run by senior
+              testers.
             </p>
           </div>
         </Container>

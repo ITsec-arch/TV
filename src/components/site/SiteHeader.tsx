@@ -52,7 +52,7 @@ export function SiteHeader() {
             aria-label="ThreatVet home"
             aria-current={pathname === "/" ? "page" : undefined}
           >
-            <Wordmark />
+            <Wordmark className="h-5" />
           </Link>
 
           {/* Desktop nav */}

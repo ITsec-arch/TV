@@ -44,8 +44,8 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      // Legacy route retired; threat intelligence now lives under research.
-      { source: "/intelligence", destination: "/research", permanent: true },
+      // Legacy route; threat intelligence is now a service line.
+      { source: "/intelligence", destination: "/services/threat-intelligence", permanent: true },
     ];
   },
 };

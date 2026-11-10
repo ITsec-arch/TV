@@ -16,7 +16,7 @@ export function SiteFooter() {
           {/* Brand + posture */}
           <div className="max-w-sm">
             <Link href="/" className="inline-flex">
-              <Wordmark className="text-lg" />
+              <Wordmark full className="h-10" />
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-fg-muted">
               A boutique, practitioner-led offensive security and threat
