@@ -6,8 +6,8 @@ export const site = {
   url: "https://threatvet.com",
   tagline: "Practitioner-led offensive security and threat intelligence.",
   email: "info@threatvet.com",
-  phone: "+91 93453 40430",
-  phoneHref: "tel:+919345340430",
+  phone: "+91 99623 00513",
+  phoneHref: "tel:+919962300513",
   locations: [
     { city: "Chennai, India", note: "HQ" },
     { city: "UAE", note: "" },
